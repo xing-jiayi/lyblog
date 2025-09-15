@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: blog_web
+server:
+  port: 8889
+  servlet:
+    context-path: /blog_server
