@@ -6,4 +6,4 @@ server:
   servlet:
     context-path: /blog_server
 logging:
-  config: classpath:logback-lyblog.xml
+  config: classpath:logback-prod.xml

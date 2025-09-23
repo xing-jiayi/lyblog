@@ -5,3 +5,5 @@ server:
   port: 8889
   servlet:
     context-path: /blog_server
+logging:
+  config: classpath:logback-dev.xml

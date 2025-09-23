@@ -21,6 +21,10 @@ public class TestController {
     @PostMapping("/test")
     @ApiOperationLog(description = "测试接口")
     public User test(@RequestBody User user) {
+        log.error("232323");
+        log.warn("232323");
+        log.info("232323");
+        log.debug("232323");
         return user;
     }
 }

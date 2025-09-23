@@ -61,7 +61,7 @@ public class ApiOperationLogAspect {
             String description = getApiOperationLogDescription(joinPoint);
 
             // 打印请求相关参数
-            log.info("====== 请求开始: [{}], 入参: {}, 请求类: {}, 请求方法: {} =================================== ",
+            log.info("====== 请求开始: [{}], 请求参数: {}, 请求类: {}, 请求方法: {} ======",
                     description, argsJsonStr, className, methodName);
 
             // 执行切点方法
@@ -70,8 +70,8 @@ public class ApiOperationLogAspect {
             // 执行耗时
             long executionTime = System.currentTimeMillis() - startTime;
 
-            // 打印出参等相关信息
-            log.info("====== 请求结束: [{}], 耗时: {}ms, 出参: {} =================================== ",
+            // 打印返回参数等相关信息
+            log.info("====== 请求结束: [{}], 耗时: {}ms, 返回参数: {} ======",
                     description, executionTime, JsonUtil.toJsonString(result));
 
             return result;
