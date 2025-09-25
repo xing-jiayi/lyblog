@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import top.crushtj.blog.common.aspect.ApiOperationLog;
+import top.crushtj.blog.common.utils.JsonUtil;
 import top.crushtj.blog.common.utils.Response;
 import top.crushtj.blog.web.model.User;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * @author 刑加一
@@ -37,7 +42,7 @@ public class TestController {
     @PostMapping("/test/validation")
     @ApiOperationLog(description = "校验测试接口")
     @ApiOperation("校验测试接口")
-    public Response<String> testVa(@RequestBody @Validated User user) {
+    public Response<User> testVa(@RequestBody @Validated User user) {
         // 是否存在校验错误
         //if (bindingResult.hasErrors()) {
         //    // 获取校验不通过字段的提示信息
@@ -49,8 +54,12 @@ public class TestController {
         //    return Response.failure(errorMsg);
         //}
 
+        log.info(JsonUtil.toJsonString(user));
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateDate(LocalDate.now());
+        user.setUpdateTime(LocalTime.now());
         // 返参
-        return Response.success("验证通过" + user.toString());
+        return Response.success(user);
     }
 
     @PostMapping("/test/exception")
