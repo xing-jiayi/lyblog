@@ -1,6 +1,5 @@
 package top.crushtj.blog.common.aspect;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -35,6 +34,7 @@ public class ApiOperationLogAspect {
 
     /**
      * 环绕通知，记录方法执行的开始和结束时间、入参、出参等信息
+     *
      * @param joinPoint 切点
      * @return 方法执行结果
      * @throws Throwable 方法执行异常
@@ -46,23 +46,29 @@ public class ApiOperationLogAspect {
             long startTime = System.currentTimeMillis();
 
             // MDC
-            MDC.put("traceId", UUID.randomUUID().toString());
+            MDC.put("traceId", UUID.randomUUID()
+                .toString());
 
             // 获取被请求的类和方法
-            String className = joinPoint.getTarget().getClass().getSimpleName();
-            String methodName = joinPoint.getSignature().getName();
+            String className = joinPoint.getTarget()
+                .getClass()
+                .getSimpleName();
+            String methodName = joinPoint.getSignature()
+                .getName();
 
             // 请求入参
             Object[] args = joinPoint.getArgs();
             // 入参转 JSON 字符串
-            String argsJsonStr = Arrays.stream(args).map(toJsonStr()).collect(Collectors.joining(", "));
+            String argsJsonStr = Arrays.stream(args)
+                .map(toJsonStr())
+                .collect(Collectors.joining(", "));
 
             // 功能描述信息
             String description = getApiOperationLogDescription(joinPoint);
 
             // 打印请求相关参数
-            log.info("====== 请求开始: [{}], 请求参数: {}, 请求类: {}, 请求方法: {} ======",
-                    description, argsJsonStr, className, methodName);
+            log.info("====== 请求开始: [{}], 请求参数: {}, 请求类: {}, 请求方法: {} ======", description, argsJsonStr,
+                className, methodName);
 
             // 执行切点方法
             Object result = joinPoint.proceed();
@@ -71,8 +77,8 @@ public class ApiOperationLogAspect {
             long executionTime = System.currentTimeMillis() - startTime;
 
             // 打印返回参数等相关信息
-            log.info("====== 请求结束: [{}], 耗时: {}ms, 返回参数: {} ======",
-                    description, executionTime, JsonUtil.toJsonString(result));
+            log.info("====== 请求结束: [{}], 耗时: {}ms, 返回参数: {} ======", description, executionTime,
+                JsonUtil.toJsonString(result));
 
             return result;
         } finally {
@@ -88,7 +94,7 @@ public class ApiOperationLogAspect {
      */
     private String getApiOperationLogDescription(ProceedingJoinPoint joinPoint) {
         // 1. 从 ProceedingJoinPoint 获取 MethodSignature
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        MethodSignature signature = (MethodSignature)joinPoint.getSignature();
 
         // 2. 使用 MethodSignature 获取当前被注解的 Method
         Method method = signature.getMethod();

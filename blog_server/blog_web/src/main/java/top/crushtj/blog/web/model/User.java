@@ -1,6 +1,5 @@
 package top.crushtj.blog.web.model;
 
-
 import lombok.Data;
 
 import javax.validation.constraints.*;

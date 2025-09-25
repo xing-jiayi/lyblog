@@ -1,9 +1,9 @@
 package top.crushtj.blog.web.controller;
 
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import top.crushtj.blog.common.aspect.ApiOperationLog;
 import top.crushtj.blog.common.utils.Response;
 import top.crushtj.blog.web.model.User;
-
-import java.util.stream.Collectors;
 
 /**
  * @author 刑加一
@@ -22,10 +20,12 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Slf4j
+@Api(tags = "测试接口")
 public class TestController {
 
     @PostMapping("/test")
     @ApiOperationLog(description = "测试接口")
+    @ApiOperation("测试接口")
     public User test(@RequestBody User user) {
         log.error("232323");
         log.warn("232323");
@@ -36,17 +36,18 @@ public class TestController {
 
     @PostMapping("/test/validation")
     @ApiOperationLog(description = "校验测试接口")
-    public Response<String> test(@RequestBody @Validated User user, BindingResult bindingResult) {
+    @ApiOperation("校验测试接口")
+    public Response<String> testVa(@RequestBody @Validated User user) {
         // 是否存在校验错误
-        if (bindingResult.hasErrors()) {
-            // 获取校验不通过字段的提示信息
-            String errorMsg = bindingResult.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .collect(Collectors.joining(", "));
-
-            return Response.failure(errorMsg);
-        }
+        //if (bindingResult.hasErrors()) {
+        //    // 获取校验不通过字段的提示信息
+        //    String errorMsg = bindingResult.getFieldErrors()
+        //            .stream()
+        //            .map(FieldError::getDefaultMessage)
+        //            .collect(Collectors.joining(", "));
+        //
+        //    return Response.failure(errorMsg);
+        //}
 
         // 返参
         return Response.success("验证通过" + user.toString());
@@ -54,8 +55,9 @@ public class TestController {
 
     @PostMapping("/test/exception")
     @ApiOperationLog(description = "异常测试接口")
+    @ApiOperation("异常测试接口")
     public Response<String> testException(@RequestBody @Validated User user, BindingResult bindingResult) {
-       //throw new BizException(ResponseCodeEnum.SYSTEM_ERROR);
+        //throw new BizException(ResponseCodeEnum.SYSTEM_ERROR);
         int i = 1 / 0;
         return Response.success();
     }

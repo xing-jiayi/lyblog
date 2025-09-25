@@ -1,6 +1,8 @@
 package top.crushtj.blog.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -8,6 +10,7 @@ import top.crushtj.blog.common.enums.ResponseCodeEnum;
 import top.crushtj.blog.common.utils.Response;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * @author 刑加一
@@ -22,7 +25,8 @@ public class GlobalExceptionHandler {
 
     /**
      * 自定义业务异常
-     * @param request 请求
+     *
+     * @param request      请求
      * @param bizException 业务异常
      * @return 响应结果
      */
@@ -36,7 +40,8 @@ public class GlobalExceptionHandler {
 
     /**
      * 其他异常
-     * @param request 请求
+     *
+     * @param request   请求
      * @param exception 异常
      * @return 响应结果
      */
@@ -45,5 +50,26 @@ public class GlobalExceptionHandler {
     public Response<Object> handleOtherException(HttpServletRequest request, Exception exception) {
         log.error("{} request error, ", request.getRequestURI(), exception);
         return Response.failure(ResponseCodeEnum.SYSTEM_ERROR);
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ResponseBody
+    public Response<Object> handleMethodArgumentNotValidException(HttpServletRequest request,
+        MethodArgumentNotValidException exception) {
+        String errorCode = ResponseCodeEnum.PARAMS_NOT_VALID.getErrorCode();
+        BindingResult bindingResult = exception.getBindingResult();
+        StringBuffer sb = new StringBuffer();
+        Optional.of(bindingResult.getFieldErrors())
+            .ifPresent(errors -> errors.forEach(error -> {
+                sb.append(error.getField())
+                    .append(" ")
+                    .append(error.getDefaultMessage())
+                    .append(", 当前值: '")
+                    .append(error.getRejectedValue())
+                    .append("'; ");
+            }));
+        String errorMessage = sb.toString();
+        log.warn("{} request error, errorCode: {}, errorMessage: {}", request.getRequestURI(), errorCode, errorMessage);
+        return Response.failure(errorCode, errorMessage);
     }
 }

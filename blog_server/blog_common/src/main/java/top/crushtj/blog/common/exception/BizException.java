@@ -1,6 +1,5 @@
 package top.crushtj.blog.common.exception;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class BizException extends RuntimeException{
+public class BizException extends RuntimeException {
     /**
      * 错误码
      */
@@ -23,7 +22,7 @@ public class BizException extends RuntimeException{
      */
     private String errorMessage;
 
-    public BizException(BaseExceptionInterface baseException){
+    public BizException(BaseExceptionInterface baseException) {
         this.errorCode = baseException.getErrorCode();
         this.errorMessage = baseException.getErrorMessage();
     }

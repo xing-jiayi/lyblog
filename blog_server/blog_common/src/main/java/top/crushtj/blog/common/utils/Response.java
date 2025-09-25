@@ -1,6 +1,5 @@
 package top.crushtj.blog.common.utils;
 
-
 import lombok.Data;
 import top.crushtj.blog.common.enums.ResponseCodeEnum;
 import top.crushtj.blog.common.exception.BizException;
@@ -38,8 +37,9 @@ public class Response<T> implements Serializable {
 
     /**
      * 成功响应
-     * @return Response<T>
+     *
      * @param <T> 数据类型
+     * @return Response<T>
      */
     public static <T> Response<T> success() {
         return success(null);
@@ -47,9 +47,10 @@ public class Response<T> implements Serializable {
 
     /**
      * 成功响应
+     *
      * @param data 响应数据
+     * @param <T>  数据类型
      * @return Response<T>
-     * @param <T> 数据类型
      */
     public static <T> Response<T> success(T data) {
         Response<T> res = new Response<>();
@@ -59,10 +60,11 @@ public class Response<T> implements Serializable {
 
     /**
      * 失败响应
-     * @return Response<T>
+     *
      * @param <T> 数据类型
+     * @return Response<T>
      */
-    public static <T>Response<T> failure(){
+    public static <T> Response<T> failure() {
         Response<T> res = new Response<>();
         res.setSuccess(false);
         return res;
@@ -70,22 +72,24 @@ public class Response<T> implements Serializable {
 
     /**
      * 失败响应
+     *
      * @param errorMessage 错误信息
+     * @param <T>          数据类型
      * @return Response<T>
-     * @param <T> 数据类型
      */
-    public static <T> Response<T> failure(String errorMessage){
-        return failure(null,errorMessage);
+    public static <T> Response<T> failure(String errorMessage) {
+        return failure(null, errorMessage);
     }
 
     /**
      * 失败响应
-     * @param errorCode 错误码
+     *
+     * @param errorCode    错误码
      * @param errorMessage 错误信息
+     * @param <T>          数据类型
      * @return Response<T>
-     * @param <T> 数据类型
      */
-    public static <T> Response<T> failure(String errorCode,String errorMessage){
+    public static <T> Response<T> failure(String errorCode, String errorMessage) {
         Response<T> res = new Response<>();
         res.setSuccess(false);
         res.setErrorMessage(errorMessage);
@@ -95,15 +99,16 @@ public class Response<T> implements Serializable {
 
     /**
      * 失败响应
+     *
      * @param bizException 业务异常
+     * @param <T>          数据类型
      * @return Response<T>
-     * @param <T> 数据类型
      */
-    public static <T> Response<T> failure(BizException bizException){
-        return failure(bizException.getErrorCode(),bizException.getErrorMessage());
+    public static <T> Response<T> failure(BizException bizException) {
+        return failure(bizException.getErrorCode(), bizException.getErrorMessage());
     }
 
-    public static <T> Response<T> failure(ResponseCodeEnum responseCodeEnum){
-        return failure(responseCodeEnum.getErrorCode(),responseCodeEnum.getErrorMessage());
+    public static <T> Response<T> failure(ResponseCodeEnum responseCodeEnum) {
+        return failure(responseCodeEnum.getErrorCode(), responseCodeEnum.getErrorMessage());
     }
 }
