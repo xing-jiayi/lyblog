@@ -34,8 +34,8 @@ public class TestController {
         return user;
     }
 
-    @PostMapping("/testValida")
-    @ApiOperationLog(description = "测试接口")
+    @PostMapping("/test/validation")
+    @ApiOperationLog(description = "校验测试接口")
     public Response<String> test(@RequestBody @Validated User user, BindingResult bindingResult) {
         // 是否存在校验错误
         if (bindingResult.hasErrors()) {
@@ -50,5 +50,13 @@ public class TestController {
 
         // 返参
         return Response.success("验证通过" + user.toString());
+    }
+
+    @PostMapping("/test/exception")
+    @ApiOperationLog(description = "异常测试接口")
+    public Response<String> testException(@RequestBody @Validated User user, BindingResult bindingResult) {
+       //throw new BizException(ResponseCodeEnum.SYSTEM_ERROR);
+        int i = 1 / 0;
+        return Response.success();
     }
 }

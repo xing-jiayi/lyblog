@@ -2,6 +2,8 @@ package top.crushtj.blog.common.utils;
 
 
 import lombok.Data;
+import top.crushtj.blog.common.enums.ResponseCodeEnum;
+import top.crushtj.blog.common.exception.BizException;
 
 import java.io.Serializable;
 
@@ -55,19 +57,53 @@ public class Response<T> implements Serializable {
         return res;
     }
 
+    /**
+     * 失败响应
+     * @return Response<T>
+     * @param <T> 数据类型
+     */
     public static <T>Response<T> failure(){
-        return failure(null);
+        Response<T> res = new Response<>();
+        res.setSuccess(false);
+        return res;
     }
 
+    /**
+     * 失败响应
+     * @param errorMessage 错误信息
+     * @return Response<T>
+     * @param <T> 数据类型
+     */
     public static <T> Response<T> failure(String errorMessage){
         return failure(null,errorMessage);
     }
 
+    /**
+     * 失败响应
+     * @param errorCode 错误码
+     * @param errorMessage 错误信息
+     * @return Response<T>
+     * @param <T> 数据类型
+     */
     public static <T> Response<T> failure(String errorCode,String errorMessage){
         Response<T> res = new Response<>();
         res.setSuccess(false);
         res.setErrorMessage(errorMessage);
         res.setErrorCode(errorCode);
         return res;
+    }
+
+    /**
+     * 失败响应
+     * @param bizException 业务异常
+     * @return Response<T>
+     * @param <T> 数据类型
+     */
+    public static <T> Response<T> failure(BizException bizException){
+        return failure(bizException.getErrorCode(),bizException.getErrorMessage());
+    }
+
+    public static <T> Response<T> failure(ResponseCodeEnum responseCodeEnum){
+        return failure(responseCodeEnum.getErrorCode(),responseCodeEnum.getErrorMessage());
     }
 }
