@@ -2,7 +2,6 @@ package top.crushtj.blog.web.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import top.crushtj.blog.common.aspect.ApiOperationLog;
+import top.crushtj.blog.common.utils.Response;
 import top.crushtj.blog.web.model.User;
 
 import java.util.stream.Collectors;
@@ -36,7 +36,7 @@ public class TestController {
 
     @PostMapping("/testValida")
     @ApiOperationLog(description = "测试接口")
-    public ResponseEntity<String> test(@RequestBody @Validated User user, BindingResult bindingResult) {
+    public Response<String> test(@RequestBody @Validated User user, BindingResult bindingResult) {
         // 是否存在校验错误
         if (bindingResult.hasErrors()) {
             // 获取校验不通过字段的提示信息
@@ -45,10 +45,10 @@ public class TestController {
                     .map(FieldError::getDefaultMessage)
                     .collect(Collectors.joining(", "));
 
-            return ResponseEntity.badRequest().body(errorMsg);
+            return Response.failure(errorMsg);
         }
 
         // 返参
-        return ResponseEntity.ok("参数没有任何问题");
+        return Response.success();
     }
 }
