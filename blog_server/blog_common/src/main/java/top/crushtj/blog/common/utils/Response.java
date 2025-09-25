@@ -40,7 +40,7 @@ public class Response<T> implements Serializable {
      * @param <T> 数据类型
      */
     public static <T> Response<T> success() {
-        return new Response<>();
+        return success(null);
     }
 
     /**
@@ -56,16 +56,11 @@ public class Response<T> implements Serializable {
     }
 
     public static <T>Response<T> failure(){
-        Response<T> res = new Response<>();
-        res.setSuccess(false);
-        return res;
+        return failure(null);
     }
 
     public static <T> Response<T> failure(String errorMessage){
-        Response<T> res = new Response<>();
-        res.setSuccess(false);
-        res.setErrorMessage(errorMessage);
-        return res;
+        return failure(null,errorMessage);
     }
 
     public static <T> Response<T> failure(String errorCode,String errorMessage){

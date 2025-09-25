@@ -49,6 +49,6 @@ public class TestController {
         }
 
         // 返参
-        return Response.success();
+        return Response.success("验证通过" + user.toString());
     }
 }
