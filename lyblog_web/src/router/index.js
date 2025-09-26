@@ -1,5 +1,7 @@
-import Index from "../pages/frontend/index.vue";
+import Index from "@/pages/frontend/index.vue";
 import { createRouter, createWebHashHistory } from 'vue-router'
+
+import Login from '@/pages/admin/login.vue'
 
 const routes = [
     {
@@ -8,7 +10,14 @@ const routes = [
         meta: { // meta 信息
             title: 'Weblog 首页' // 页面标题
         }
-    }
+    },
+    {
+        path: '/login', // 登录页
+        component: Login,
+        meta: {
+            title: 'Weblog 登录页'
+        }
+    },
 ]
 
 // 创建路由
