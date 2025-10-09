@@ -1,9 +1,24 @@
 spring:
   application:
     name: blog_web
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/lyblog?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: lyblog
+    password: lyblog_aW3$rFcXz
+  hikari:
+    minimum-idle: 5
+    maximum-pool-size: 20
+    auto-commit: true
+    idle-timeout: 30000
+    pool-name: Weblog-HikariCP
+    max-lifetime: 1800000
+    connection-timeout: 30000
+    connection-test-query: SELECT 1
 server:
   port: 8889
   servlet:
     context-path: /blog_server
 logging:
   config: classpath:logback-dev.xml
+
