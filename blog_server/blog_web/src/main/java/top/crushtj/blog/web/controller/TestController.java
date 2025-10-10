@@ -70,4 +70,16 @@ public class TestController {
         int i = 1 / 0;
         return Response.success();
     }
+
+    @PostMapping("/admin/test")
+    @ApiOperationLog(description = "鉴权测试接口")
+    @ApiOperation("鉴权测试接口")
+    public Response<User> testAdmin(@RequestBody @Validated User user) {
+        log.info(JsonUtil.toJsonString(user));
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateDate(LocalDate.now());
+        user.setUpdateTime(LocalTime.now());
+        // 返参
+        return Response.success(user);
+    }
 }

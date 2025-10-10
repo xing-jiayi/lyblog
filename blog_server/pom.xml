@@ -22,6 +22,7 @@
         <module>blog_web</module>
         <module>blog_admin</module>
         <module>blog_common</module>
+        <module>blog_jwt</module>
     </modules>
 
     <properties>
@@ -53,6 +54,12 @@
             <dependency>
                 <groupId>top.crushtj</groupId>
                 <artifactId>blog_common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>top.crushtj</groupId>
+                <artifactId>blog_jwt</artifactId>
                 <version>${revision}</version>
             </dependency>
 

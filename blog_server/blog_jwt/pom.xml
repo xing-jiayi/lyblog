@@ -8,20 +8,12 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>blog_admin</artifactId>
-    <name>blog_admin</name>
-    <description>blog_admin</description>
+    <groupId>top.crushtj</groupId>
+    <artifactId>blog_jwt</artifactId>
+    <name>blog-jwt</name>
+    <description>blog-jwt (JWT 模块，管理用户认证、鉴权)</description>
 
     <dependencies>
-        <dependency>
-            <groupId>top.crushtj</groupId>
-            <artifactId>blog_common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>top.crushtj</groupId>
-            <artifactId>blog_jwt</artifactId>
-        </dependency>
         <!-- 免写冗余的 Java 样板式代码 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -34,12 +26,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- knife4j -->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
         </dependency>
 
         <!-- Spring Security -->
