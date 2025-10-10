@@ -22,7 +22,7 @@ class BlogWebApplicationTests {
     void insertTest() {
         // 构建数据库实体类
         UserDo userDO = UserDo.builder()
-            .username("一")
+            .username("刑加一")
             .password("123456")
             .createTime(LocalDateTime.now())
             .updateTime(LocalDateTime.now())
