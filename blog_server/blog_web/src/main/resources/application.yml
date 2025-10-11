@@ -6,4 +6,6 @@ spring:
 jwt:
   issuer: xingjiayi
   secret: SojDh/pFOViady8c6C6yIka4x0BUbKtDHjUj3BvrRImIiBGXq0PX0dX/KR26+0H/cR9D5mQv39MbZwpMsA9V+w==
-
+  tokenExpireTime: 1440
+  tokenHeaderKey: Authorization
+  tokenPrefix: Bearer
