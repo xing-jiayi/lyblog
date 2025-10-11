@@ -42,6 +42,7 @@
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <fastjson.version>1.2.83</fastjson.version>
         <p6spy.version>3.9.1</p6spy.version>
+        <jwt.version>0.11.2</jwt.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -114,6 +115,23 @@
                 <groupId>p6spy</groupId>
                 <artifactId>p6spy</artifactId>
                 <version>${p6spy.version}</version>
+            </dependency>
+
+            <!--   JWT   -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

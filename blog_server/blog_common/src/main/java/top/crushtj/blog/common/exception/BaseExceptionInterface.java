@@ -6,6 +6,7 @@ package top.crushtj.blog.common.exception;
  * @date 2025/09/25
  * @description 基础异常接口
  */
+
 public interface BaseExceptionInterface {
     /**
      * 获取错误码

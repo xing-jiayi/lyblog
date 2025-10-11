@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @date 2025/09/25
  * @description 响应工具类
  */
+
 @Data
 public class Response<T> implements Serializable {
 

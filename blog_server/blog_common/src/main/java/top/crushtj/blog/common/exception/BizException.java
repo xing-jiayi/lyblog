@@ -9,6 +9,7 @@ import lombok.Setter;
  * @date 2025/09/25
  * @description 业务异常
  */
+
 @Getter
 @Setter
 public class BizException extends RuntimeException {

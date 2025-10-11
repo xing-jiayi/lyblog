@@ -3,9 +3,9 @@ spring:
     name: blog_web
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/lyblog?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://123.56.196.56:3306/lyblog?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
     username: lyblog
-    password: lyblog_aW3$rFcXz
+    password: yJszaKhYm6Hs6pEd
   hikari:
     minimum-idle: 5
     maximum-pool-size: 20
@@ -18,7 +18,5 @@ spring:
 
 server:
   port: 8889
-  servlet:
-    context-path: /blog_server
 logging:
   config: classpath:logback-prod.xml
