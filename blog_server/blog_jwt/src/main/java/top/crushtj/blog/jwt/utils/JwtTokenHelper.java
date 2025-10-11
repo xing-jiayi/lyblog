@@ -110,4 +110,19 @@ public class JwtTokenHelper implements InitializingBean {
         String key = generateBase64Key();
         System.out.println("key: " + key);
     }
+
+    public void validateToken(String token) {
+        jwtParser.parseClaimsJws(token);
+    }
+
+    public String getUsernameByToken(String token) {
+        try {
+            Claims claims = jwtParser.parseClaimsJws(token)
+                .getBody();
+            return claims.getSubject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -1,12 +1,17 @@
 package top.crushtj.blog.admin.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.crushtj.blog.jwt.config.JwtAuthenticationSecurityConfig;
+import top.crushtj.blog.jwt.filter.TokenAuthenticationFilter;
+import top.crushtj.blog.jwt.handler.RestAccessDeniedHandler;
+import top.crushtj.blog.jwt.handler.RestAuthenticationEntryPoint;
 
 /**
  * @author 刑加一
@@ -22,6 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationSecurityConfig jwtAuthenticationSecurityConfig;
 
+    @Autowired
+    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    @Autowired
+    private RestAccessDeniedHandler restAccessDeniedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
@@ -36,7 +47,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .permitAll() // 其他都需要放行，无需认证
             .and()
+            .httpBasic()
+            .authenticationEntryPoint(restAuthenticationEntryPoint)
+            .and()
+            .exceptionHandling()
+            .accessDeniedHandler(restAccessDeniedHandler)
+            .and()
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 前后端分离，无需创建会话
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 前后端分离，无需创建会话
+            .and()
+            .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    /**
+     * Token 校验过滤器
+     *
+     * @return TokenAuthenticationFilter
+     */
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter();
     }
 }
