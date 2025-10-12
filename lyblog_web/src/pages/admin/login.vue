@@ -24,12 +24,12 @@
 					<span class="h-[1px] w-16 bg-gray-200"></span>
 				</div>
 				<!-- 引入 Element Plus 表单组件，移动端设置宽度为 5/6，PC 端设置为 2/5 -->
-				<el-form class="w-5/6 md:w-2/5">
-					<el-form-item>
+				<el-form class="w-5/6 md:w-2/5" ref="form" :rules="rules" :model="user">
+					<el-form-item prop="username">
 						<!-- 输入框组件 -->
 						<el-input size="large" v-model="user.username" placeholder="请输入用户名" :prefix-icon="User" clearable />
 					</el-form-item>
-					<el-form-item>
+					<el-form-item prop="password">
 						<!-- 密码框组件 -->
 						<el-input
 							size="large"
@@ -50,13 +50,17 @@
 </template>
 
 <script setup>
-	// 引入 Element Plus 中的用户、锁图标
 	import { User, Lock } from "@element-plus/icons-vue"
 	import { login } from "@/api/admin/user"
-	import { reactive } from "vue"
+	import { reactive, ref } from "vue"
 	import { useRouter } from "vue-router"
 
 	const router = useRouter()
+	const form = ref(null)
+	const rules = reactive({
+		username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+		password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+	})
 
 	const user = reactive({
 		username: "",
@@ -65,6 +69,12 @@
 
 	const onSubmit = () => {
 		console.log("登录")
+		form.value.validate((valid) => {
+			if (!valid) {
+				console.log("验证失败, 用户名和密码不能为空")
+				return
+			}
+		})
 		login(user.username, user.password).then((res) => {
 			console.log(res)
 			// 判断是否成功
