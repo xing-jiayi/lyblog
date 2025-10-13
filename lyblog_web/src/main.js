@@ -5,6 +5,7 @@ import App from "@/App.vue"
 import router from "@/router"
 import * as ElementPlusIconsVue from "@element-plus/icons-vue"
 import "animate.css"
+import "@/permission"
 
 // Create the app instance and store it in a variable
 const app = createApp(App)
