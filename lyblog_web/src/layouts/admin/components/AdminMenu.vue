@@ -1,13 +1,15 @@
 <template>
-	<div class="bg-slate-800 h-screen text-white">
+	<div class="bg-slate-800 h-screen text-white menu-container transition-all" :style="{ width: menuStore.menuWidth }">
 		<!-- 顶部 Logo, 指定高度为 64px, 和右边的 Header 头保持一样高 -->
 		<div class="flex items-center justify-center h-[64px]">
-			<img src="@/assets/img/lyblog-logo.png" alt="logo" class="h-[64px]" />
-			<div style="font-size: 20pt; font-family: 华文行楷">LyBlog</div>
+			<img src="@/assets/img/logo.png" alt="logo" class="h-[30px]" />
+			<div v-if="menuStore.menuWidth == '250px'">
+				<pre style="font-size: 20pt; font-family: 华文行楷">  LyBlog</pre>
+			</div>
 		</div>
 
 		<!-- 下方菜单 -->
-		<el-menu :default-active="defaultActive" @select="handleSelect">
+		<el-menu :default-active="defaultActive" @select="handleSelect" :collapse="isCollapse" :collapse-transition="false">
 			<template v-for="(item, index) in menus" :key="index">
 				<el-menu-item :index="item.path">
 					<el-icon>
@@ -22,11 +24,14 @@
 </template>
 
 <script setup>
-	import { ref } from "vue"
+	import { ref, computed } from "vue"
 	import { useRoute, useRouter } from "vue-router"
+	import { useMenuStore } from "@/store/menu"
 
 	const route = useRoute()
 	const router = useRouter()
+	const menuStore = useMenuStore()
+	const isCollapse = computed(() => !(menuStore.menuWidth == "250px"))
 
 	// 根据路由地址判断哪个菜单被选中
 	const defaultActive = ref(route.path)

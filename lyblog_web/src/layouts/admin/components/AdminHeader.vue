@@ -2,9 +2,12 @@
 	<!-- 通过 flex 指定水平布局 -->
 	<div class="bg-white h-[64px] flex pr-4 border-b border-slate-200">
 		<!-- 左边栏收缩、展开 -->
-		<div class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200">
+		<div
+			class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200"
+			@click="handleMenuWidth">
 			<el-icon>
-				<Fold />
+				<Fold v-if="menuStore.menuWidth == '250px'" />
+				<Expand v-else />
 			</el-icon>
 		</div>
 
@@ -46,8 +49,13 @@
 
 <script setup>
 	import { ref } from "vue"
+	import { useMenuStore } from "@/store/menu"
 
-	const isCollapse = ref(true)
+	const menuStore = useMenuStore()
+	const handleMenuWidth = () => {
+		// 动态设置菜单的宽度大小
+		menuStore.handleMenuWidth()
+	}
 </script>
 
 <style scoped>

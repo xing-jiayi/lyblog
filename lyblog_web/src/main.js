@@ -7,6 +7,7 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue"
 import "animate.css"
 import "@/permission"
 import "nprogress/nprogress.css"
+import { createPinia } from "pinia"
 
 // Create the app instance and store it in a variable
 const app = createApp(App)
@@ -21,3 +22,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 // Mount the app after all configurations
 app.mount("#app")
+const pinia = createPinia()
+app.use(pinia)
