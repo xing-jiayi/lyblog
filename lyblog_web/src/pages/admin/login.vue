@@ -80,13 +80,13 @@
 		loading.value = true
 		login(user.username, user.password)
 			.then((res) => {
-				if (res.data.success == true) {
+				if (res.success) {
 					ElMessage.success("登录成功")
 					router.push("/admin/index")
-					let token = res.data.data.token
+					let token = res.data.token
 					setToken(token)
 				} else {
-					ElMessage.error(res.data.errorMessage)
+					ElMessage.error(res.errorMessage)
 				}
 			})
 			.finally(() => {
