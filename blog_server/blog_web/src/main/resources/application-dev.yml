@@ -3,7 +3,7 @@ spring:
     name: blog_web
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://123.56.196.56:3306/lyblog?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/lyblog?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
     username: lyblog
     password: yJszaKhYm6Hs6pEd
   hikari:
@@ -23,3 +23,19 @@ server:
   port: 8889
 logging:
   config: classpath:logback-dev.xml
+mybatis-plus:
+  # 扫描所有模块中的 Mapper XML 文件
+  mapper-locations:
+    # 匹配 blog_common 中的 mappings 和 mappers 目录
+    - classpath*:top/crushtj/**/*.xml
+    # 如果其他模块也有 XML 文件，可以继续添加
+    # - classpath*:top/crushtj/blog/admin/**/*.xml
+    # - classpath*:top/crushtj/blog/web/**/*.xml
+
+  # 配置实体类包路径（可选，用于简化类名引用）
+  type-aliases-package: top.crushtj.blog.common.domain.dos
+
+  # 其他 MyBatis-Plus 配置（可选）
+  configuration:
+    map-underscore-to-camel-case: true  # 开启驼峰命名转换
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 日志输出（调试用）

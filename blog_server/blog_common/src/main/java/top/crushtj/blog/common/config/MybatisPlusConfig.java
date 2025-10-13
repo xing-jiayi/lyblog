@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-@MapperScan("top.crushtj.blog.common.domain.mappers")
+@MapperScan("top.crushtj.**.mappers")
 public class MybatisPlusConfig {
 }

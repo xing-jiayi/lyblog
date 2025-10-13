@@ -3,6 +3,7 @@ package top.crushtj.blog.admin.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +23,7 @@ import top.crushtj.blog.jwt.handler.RestAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -33,6 +35,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RestAccessDeniedHandler restAccessDeniedHandler;
 
+    /**
+     * 配置 HttpSecurity
+     *
+     * @param http HttpSecurity
+     * @throws Exception 异常
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()

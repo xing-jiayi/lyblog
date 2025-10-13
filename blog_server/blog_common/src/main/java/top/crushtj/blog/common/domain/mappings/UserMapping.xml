@@ -3,7 +3,7 @@
 <mapper namespace="top.crushtj.blog.common.domain.mappers.UserMapper">
 
     <resultMap type="top.crushtj.blog.common.domain.dos.UserDo" id="UserMap">
-        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -11,4 +11,7 @@
         <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
     </resultMap>
 
+    <select id="selectByUsername" resultType="top.crushtj.blog.common.domain.dos.UserDo">
+        SELECT * from t_user WHERE username = #{username} AND is_deleted = 0
+    </select>
 </mapper>

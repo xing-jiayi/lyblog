@@ -16,22 +16,29 @@ import java.time.LocalDateTime;
 /**
  * @author 刑加一
  * @url www.crushtj.top
- * @date 2025/10/13 14:48
- * @description 用户表(t_user)实体类
+ * @date 2025/10/13 14:58
+ * @description 用户角色表(t_user_role)实体类
  **/
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("t_user")
-public class UserDo implements Serializable {
-    private static final long serialVersionUID = 504149713184249918L;
+@TableName("t_user_role")
+public class UserRoleDo implements Serializable {
+    private static final long serialVersionUID = -50543178631223288L;
+
+    /**
+     * 角色id
+     */
+    @TableId("ROLE_ID")
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long roleId;
 
     /**
      * 用户id
      */
-    @TableId("USER_ID")
+    @TableField("USER_ID")
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long userId;
 
@@ -42,28 +49,16 @@ public class UserDo implements Serializable {
     private String username;
 
     /**
-     * 密码
+     * 角色名
      */
-    @TableField("PASSWORD")
-    private String password;
+    @TableField("ROLE_NAME")
+    private String roleName;
 
     /**
      * 创建时间
      */
     @TableField("CREATE_TIME")
     private LocalDateTime createTime;
-
-    /**
-     * 最后一次更新时间
-     */
-    @TableField("UPDATE_TIME")
-    private LocalDateTime updateTime;
-
-    /**
-     * 逻辑删除：0：未删除 1：已删除
-     */
-    @TableField("IS_DELETED")
-    private Integer isDeleted;
 
 }
 

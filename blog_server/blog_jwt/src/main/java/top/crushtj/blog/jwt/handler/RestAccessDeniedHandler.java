@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
+import top.crushtj.blog.common.enums.ResponseCodeEnum;
+import top.crushtj.blog.common.utils.Response;
+import top.crushtj.blog.jwt.utils.ResultUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,5 +28,6 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response,
         AccessDeniedException accessDeniedException) throws IOException, ServletException {
         log.warn("没有访问权限:  ", accessDeniedException);
+        ResultUtil.failure(response, Response.failure(ResponseCodeEnum.FORBIDDEN));
     }
 }

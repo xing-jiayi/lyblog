@@ -8,8 +8,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import top.crushtj.blog.common.domain.dos.UserDo;
+import top.crushtj.blog.common.domain.dos.UserRoleDo;
 import top.crushtj.blog.common.domain.mappers.UserMapper;
+import top.crushtj.blog.common.domain.mappers.UserRoleMapper;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,6 +29,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
     /**
      * 模拟从数据库加载用户信息
      *
@@ -36,16 +42,31 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserDo user = userMapper.findByUsername(username);
+        UserDo user = userMapper.selectByUsername(username);
 
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("该用户不存在");
         }
 
-        // authorities指定用户角色，暂写死为ADMIN
+        String[] roleArr = null;
+        List<UserRoleDo> roles = userRoleMapper.selectByUserId(user.getUserId());
+
+        if (roles != null && !roles.isEmpty()) {
+            roleArr = roles.stream()
+                .map(UserRoleDo::getRoleName)
+                .toArray(String[]::new);
+        }
+
+        // authorities指定用户角色
+        if (roleArr != null) {
+            return User.withUsername(user.getUsername())
+                .password(user.getPassword())
+                .authorities(roleArr)
+                .build();
+        }
         return User.withUsername(user.getUsername())
             .password(user.getPassword())
-            .authorities("ADMIN")
+            .authorities("ROLE_USER") // 默认角色
             .build();
     }
 }

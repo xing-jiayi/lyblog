@@ -1,6 +1,7 @@
 package top.crushtj.blog.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -52,6 +53,13 @@ public class GlobalExceptionHandler {
         return Response.failure(ResponseCodeEnum.SYSTEM_ERROR);
     }
 
+    /**
+     * 参数校验异常
+     *
+     * @param request   请求
+     * @param exception 参数校验异常
+     * @return 响应结果
+     */
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseBody
     public Response<Object> handleMethodArgumentNotValidException(HttpServletRequest request,
@@ -71,5 +79,18 @@ public class GlobalExceptionHandler {
         String errorMessage = sb.toString();
         log.warn("{} request error, errorCode: {}, errorMessage: {}", request.getRequestURI(), errorCode, errorMessage);
         return Response.failure(errorCode, errorMessage);
+    }
+
+    /**
+     * 捕获 AccessDeniedException 异常，交给 RestAccessDeniedHandler 处理
+     *
+     * @param e AccessDeniedException
+     * @throws AccessDeniedException 鉴权失败异常
+     */
+    @ExceptionHandler({ AccessDeniedException.class })
+    public void throwAccessDeniedException(AccessDeniedException e) throws AccessDeniedException {
+        // 捕获到鉴权失败异常，主动抛出，交给 RestAccessDeniedHandler 去处理
+        log.info("============= 捕获到 AccessDeniedException =============");
+        throw e;
     }
 }

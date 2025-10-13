@@ -1,7 +1,7 @@
 package top.crushtj.blog.common.domain.mappers;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import top.crushtj.blog.common.domain.dos.UserDo;
 
 /**
@@ -13,11 +13,7 @@ import top.crushtj.blog.common.domain.dos.UserDo;
 
 public interface UserMapper extends BaseMapper<UserDo> {
 
-    default UserDo findByUsername(String username) {
-        LambdaQueryWrapper<UserDo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserDo::getUsername, username);
-        return this.selectOne(wrapper);
-    }
+    UserDo selectByUsername(@Param("username") String username);
 
     ;
 
