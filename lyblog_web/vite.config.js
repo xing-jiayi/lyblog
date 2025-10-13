@@ -1,22 +1,25 @@
 import { fileURLToPath, URL } from "node:url"
 
-import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
+import { defineConfig } from "vite"
 
 import AutoImport from "unplugin-auto-import/vite"
-import Components from "unplugin-vue-components/vite"
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers"
+import Components from "unplugin-vue-components/vite"
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	server: {
 		proxy: {
 			"/api": {
-				target: "http://localhost:8889",
+				target: "http://127.0.0.1:8889",
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},
 		},
+		host: "0.0.0.0",
+		port: 5173,
+		allowedHosts: ["blog.test.crushtj.top"],
 	},
 	plugins: [
 		vue(),

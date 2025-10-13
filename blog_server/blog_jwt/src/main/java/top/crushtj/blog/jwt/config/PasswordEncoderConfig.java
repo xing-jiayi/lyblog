@@ -22,7 +22,7 @@ public class PasswordEncoderConfig {
 
     public static void main(String[] args) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String encode = bCryptPasswordEncoder.encode("xingjiayi");
+        String encode = bCryptPasswordEncoder.encode("ayi");
         System.out.println(encode);
 
     }

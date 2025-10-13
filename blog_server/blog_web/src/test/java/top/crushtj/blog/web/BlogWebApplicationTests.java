@@ -22,8 +22,8 @@ class BlogWebApplicationTests {
     void insertTest() {
         // 构建数据库实体类
         UserDo userDO = UserDo.builder()
-            .username("xingjiayi")
-            .password("$2a$10$Aa.Aeu1XDt/HDX4lsLRWwuKxHqlBgYFaoI3Ry8bLEr3XRq4PQuURW")
+            .username("ayi")
+            .password("$2a$10$mvX4QRwGFxHz5jqun2s2DOZKP3ByqZaA6e67ckaj3hJhvYKvK3QEa")
             .createTime(LocalDateTime.now())
             .updateTime(LocalDateTime.now())
             .isDeleted(0)

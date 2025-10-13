@@ -41,7 +41,7 @@
 					</el-form-item>
 					<el-form-item>
 						<!-- 登录按钮，宽度设置为 100% -->
-						<el-button class="w-full" size="large" type="primary" @click="onSubmit">登录</el-button>
+						<el-button class="w-full" size="large" type="primary" @click="onSubmit" :loading="loading">登录</el-button>
 					</el-form-item>
 				</el-form>
 			</div>
@@ -52,11 +52,14 @@
 <script setup>
 	import { User, Lock } from "@element-plus/icons-vue"
 	import { login } from "@/api/admin/user"
-	import { reactive, ref } from "vue"
+	import { onBeforeUnmount, onMounted, reactive, ref } from "vue"
 	import { useRouter } from "vue-router"
+	import { setToken } from "../../composables/auth"
+	// import { ElMessage } from "element-plus"
 
 	const router = useRouter()
 	const form = ref(null)
+	const loading = ref(false)
 	const rules = reactive({
 		username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
 		password: [{ required: true, message: "请输入密码", trigger: "blur" }],
@@ -68,20 +71,42 @@
 	})
 
 	const onSubmit = () => {
-		console.log("登录")
 		form.value.validate((valid) => {
 			if (!valid) {
-				console.log("验证失败, 用户名和密码不能为空")
+				ElMessage.error("用户名和密码不能为空")
 				return
 			}
 		})
-		login(user.username, user.password).then((res) => {
-			console.log(res)
-			// 判断是否成功
-			if (res.data.success == true) {
-				// 跳转到后台首页
-				router.push("/admin/index")
-			}
-		})
+		loading.value = true
+		login(user.username, user.password)
+			.then((res) => {
+				if (res.data.success == true) {
+					ElMessage.success("登录成功")
+					router.push("/admin/index")
+					let token = res.data.data.token
+					setToken(token)
+				} else {
+					ElMessage.error(res.data.errorMessage)
+				}
+			})
+			.finally(() => {
+				loading.value = false
+			})
 	}
+
+	function onKeyUp(e) {
+		if (e.key == "Enter") {
+			onSubmit()
+		}
+	}
+
+	// 添加键盘监听
+	onMounted(() => {
+		document.addEventListener("keyup", onKeyUp)
+	})
+
+	// 移除键盘监听
+	onBeforeUnmount(() => {
+		document.removeEventListener("keyup", onKeyUp)
+	})
 </script>
