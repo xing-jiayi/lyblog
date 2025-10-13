@@ -36,3 +36,9 @@
 	import AdminMenu from "./components/AdminMenu.vue"
 	import AdminTagList from "./components/AdminTagList.vue"
 </script>
+
+<style scoped>
+	.el-header {
+		padding: 0 !important;
+	}
+</style>

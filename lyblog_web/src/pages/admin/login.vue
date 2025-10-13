@@ -83,7 +83,7 @@
 			.then((res) => {
 				if (res.success) {
 					ElMessage.success("登录成功")
-					router.push("/admin/index")
+					router.push("/admin")
 					let token = res.data.token
 					setToken(token)
 				} else {
