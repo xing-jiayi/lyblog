@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory } from "vue-router"
 
 import Login from "@/pages/admin/login.vue"
 import AdminIndex from "@/pages/admin/index.vue"
+import Admin from "@/layouts/admin/admin.vue"
 
 const routes = [
 	{
@@ -26,6 +27,20 @@ const routes = [
 		meta: {
 			title: "Admin 后台首页",
 		},
+	},
+	{
+		path: "/admin", // 后台首页
+		component: Admin, // 对应 admin.vue 布局文件
+		// 使用到 admin.vue 布局的，都需要放置在其子路由下面
+		children: [
+			{
+				path: "/admin/index",
+				component: AdminIndex, // 主内容区域，具体需要渲染的页面
+				meta: {
+					title: "Admin 后台首页",
+				},
+			},
+		],
 	},
 ]
 
