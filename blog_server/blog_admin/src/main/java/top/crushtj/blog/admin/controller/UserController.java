@@ -36,21 +36,21 @@ public class UserController {
      * @param updateAdminPasswordVo 修改管理员密码VO
      * @return 执行结果
      */
-    @PostMapping("/updPasswd")
+    @PostMapping("/password/update")
     @ApiOperationLog(description = "修改管理员密码")
     @ApiOperation(value = "修改管理员密码")
     public Response updatePasswordByUserName(@RequestBody @Validated UpdateAdminPasswordVo updateAdminPasswordVo) {
         return userService.updatePasswordByUserName(updateAdminPasswordVo);
     }
 
-    @PostMapping("/addUser")
+    @PostMapping("/user/add")
     @ApiOperationLog(description = "新增用户")
     @ApiOperation(value = "新增用户")
     public Response<UserVo> addUser(@RequestBody @Validated UserDo userDo) {
         return userService.addUser(userDo);
     }
 
-    @PostMapping("/getUserInfo")
+    @PostMapping("/user/info")
     @ApiOperationLog(description = "获取当前登录用户信息")
     @ApiOperation(value = "获取当前登录用户信息")
     public Response<UserVo> getCurrentUserInfo() {

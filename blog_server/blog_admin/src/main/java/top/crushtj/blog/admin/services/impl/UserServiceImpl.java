@@ -45,7 +45,10 @@ public class UserServiceImpl implements UserService {
     public Response updatePasswordByUserName(UpdateAdminPasswordVo updateAdminPasswordVo) {
         String username = updateAdminPasswordVo.getUsername();
         String password = updateAdminPasswordVo.getPassword();
-
+        UserDo userDo = userMapper.selectByUsername(username);
+        if (passwordEncoder.matches(password, userDo.getPassword())) {
+            return Response.failure("新密码不能和原密码相同！");
+        }
         String encodedPassword = passwordEncoder.encode(password);
         int updateCount = userMapper.updatePasswordByUsername(username, encodedPassword);
         return updateCount == 1 ? Response.success() : Response.failure(ResponseCodeEnum.USERNAME_NOT_FOUND);
