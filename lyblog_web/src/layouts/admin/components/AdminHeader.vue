@@ -1,78 +1,79 @@
 <template>
-	<!-- 通过 flex 指定水平布局 -->
-	<div class="bg-white h-[64px] flex pr-4 border-b border-slate-100">
-		<!-- 左边栏收缩、展开 -->
-		<div
-			class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200"
-			@click="handleMenuWidth">
-			<el-icon>
-				<Fold v-if="menuStore.menuWidth == '250px'" />
-				<Expand v-else />
-			</el-icon>
-		</div>
+  <!-- 通过 flex 指定水平布局 -->
+  <div class="bg-white h-[64px] flex pr-4 border-b border-slate-100">
+    <!-- 左边栏收缩、展开 -->
+    <div
+        class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200"
+        @click="handleMenuWidth">
+      <el-icon>
+        <Fold v-if="menuStore.menuWidth === '250px'"/>
+        <Expand v-else/>
+      </el-icon>
+    </div>
 
-		<!-- 右边容器，通过 ml-auto 让其在父容器的右边 -->
-		<div class="ml-auto flex">
-			<el-tooltip class="box-item" effect="dark" content="刷新" placement="bottom">
-				<div
-					class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200"
-					@click="handleRefresh">
-					<el-icon>
-						<Refresh />
-					</el-icon>
-				</div>
-			</el-tooltip>
-			<el-tooltip class="box-item" effect="dark" content="全屏" placement="bottom">
-				<div
-					class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200"
-					@click="toggle">
-					<el-icon>
-						<FullScreen v-if="!isFullscreen" />
-						<Aim v-else />
-					</el-icon>
-				</div>
-			</el-tooltip>
+    <!-- 右边容器，通过 ml-auto 让其在父容器的右边 -->
+    <div class="ml-auto flex">
+      <el-tooltip class="box-item" effect="dark" content="刷新" placement="bottom">
+        <div
+            class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200"
+            @click="handleRefresh">
+          <el-icon>
+            <Refresh/>
+          </el-icon>
+        </div>
+      </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="全屏" placement="bottom">
+        <div
+            class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200"
+            @click="toggle">
+          <el-icon>
+            <FullScreen v-if="!isFullscreen"/>
+            <Aim v-else/>
+          </el-icon>
+        </div>
+      </el-tooltip>
 
-			<!-- 登录用户头像 -->
-			<el-dropdown class="flex items-center justify-center">
+      <!-- 登录用户头像 -->
+      <el-dropdown class="flex items-center justify-center">
 				<span class="el-dropdown-link flex items-center justify-center text-gray-700 text-xs">
 					<!-- 头像 Avatar -->
 					<el-avatar
-						class="mr-2"
-						:size="25"
-						src="https://img.quanxiaoha.com/quanxiaoha/f97361c0429d4bb1bc276ab835843065.jpg" />
-					Admin
+              class="mr-2"
+              :size="25"
+              src="https://img.quanxiaoha.com/quanxiaoha/f97361c0429d4bb1bc276ab835843065.jpg"/>
+					{{ userStore.userInfo.username }}
 					<el-icon class="el-icon--right">
-						<arrow-down />
+						<arrow-down/>
 					</el-icon>
 				</span>
-				<template #dropdown>
-					<el-dropdown-menu>
-						<el-dropdown-item>修改密码</el-dropdown-item>
-						<el-dropdown-item>退出登录</el-dropdown-item>
-					</el-dropdown-menu>
-				</template>
-			</el-dropdown>
-		</div>
-	</div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>修改密码</el-dropdown-item>
+            <el-dropdown-item>退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
+  </div>
 </template>
 
 <script setup>
-	import { ref } from "vue"
-	import { useMenuStore } from "@/stores/menu"
-	import { useFullscreen } from "@vueuse/core"
+import {useMenuStore} from "@/stores/menu"
+import {useFullscreen} from "@vueuse/core"
+import {useUserStore} from "@/stores/user"
 
-	const menuStore = useMenuStore()
-	const handleMenuWidth = () => {
-		// 动态设置菜单的宽度大小
-		menuStore.handleMenuWidth()
-	}
-	const { isFullscreen, toggle } = useFullscreen()
-	const handleRefresh = () => location.reload()
+const menuStore = useMenuStore()
+const userStore = useUserStore()
+const handleMenuWidth = () => {
+  // 动态设置菜单的宽度大小
+  menuStore.handleMenuWidth()
+}
+const {isFullscreen, toggle} = useFullscreen()
+const handleRefresh = () => location.reload()
 </script>
 
 <style scoped>
-	.el-header {
-		padding: 0 !important;
-	}
+.el-header {
+  padding: 0 !important;
+}
 </style>
