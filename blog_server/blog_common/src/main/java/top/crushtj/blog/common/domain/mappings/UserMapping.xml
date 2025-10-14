@@ -10,6 +10,9 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
     </resultMap>
+    <update id="updatePasswordByUsername">
+        UPDATE t_user SET password = #{password}, update_time = NOW() WHERE username = #{username} AND is_deleted = 0
+    </update>
 
     <select id="selectByUsername" resultType="top.crushtj.blog.common.domain.dos.UserDo">
         SELECT * from t_user WHERE username = #{username} AND is_deleted = 0
