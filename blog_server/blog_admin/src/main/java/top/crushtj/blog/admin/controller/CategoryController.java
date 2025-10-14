@@ -16,6 +16,7 @@ import top.crushtj.blog.common.utils.PageResponse;
 import top.crushtj.blog.common.utils.Response;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author 刑加一
@@ -58,6 +59,13 @@ public class CategoryController {
     @ApiOperationLog(description = "删除分类")
     public Response<String> deleteCategory(String categoryId) {
         return categoryService.deleteCategory(categoryId);
+    }
+
+    @PostMapping("/category/list")
+    @ApiOperation(value = "获取所有分类")
+    @ApiOperationLog(description = "获取所有分类")
+    public Response<List<CategoryDo>> queryCategoryList() {
+        return categoryService.getAllCategory();
     }
 
 }

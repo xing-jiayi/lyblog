@@ -14,6 +14,7 @@ import top.crushtj.blog.common.utils.Response;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -70,5 +71,11 @@ public class CategoryServiceImpl implements CategoryService {
         category.setIsDeleted(1);
         categoryMapper.updateById(category);
         return Response.success("删除成功！");
+    }
+
+    @Override
+    public Response<List<CategoryDo>> getAllCategory() {
+        List<CategoryDo> categoryList = categoryMapper.getAllCategory();
+        return Response.success(categoryList);
     }
 }

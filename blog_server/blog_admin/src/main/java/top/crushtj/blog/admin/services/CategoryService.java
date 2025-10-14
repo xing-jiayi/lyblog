@@ -5,6 +5,8 @@ import top.crushtj.blog.common.domain.dos.CategoryDo;
 import top.crushtj.blog.common.utils.PageResponse;
 import top.crushtj.blog.common.utils.Response;
 
+import java.util.List;
+
 /**
  * @author 刑加一
  * @url www.crushtj.top
@@ -21,4 +23,6 @@ public interface CategoryService {
     PageResponse<CategoryDo> queryCategoryPage(CategorySearchVo categorySearchVo);
 
     Response<String> deleteCategory(String categoryId);
+
+    Response<List<CategoryDo>> getAllCategory();
 }

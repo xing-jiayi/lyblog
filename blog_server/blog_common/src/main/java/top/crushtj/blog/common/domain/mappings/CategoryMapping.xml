@@ -26,4 +26,7 @@
         </if>
         ORDER BY create_time DESC
     </select>
+    <select id="getAllCategory" resultType="top.crushtj.blog.common.domain.dos.CategoryDo">
+        SELECT * FROM t_category where is_deleted = 0 ORDER BY create_time DESC
+    </select>
 </mapper>

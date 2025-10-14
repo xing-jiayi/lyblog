@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import top.crushtj.blog.common.domain.dos.CategoryDo;
 import top.crushtj.blog.common.domain.dos.vo.category.CategorySearchVo;
 
+import java.util.List;
+
 /**
  * @author 刑加一
  * @url www.crushtj.top
@@ -19,5 +21,7 @@ public interface CategoryMapper extends BaseMapper<CategoryDo> {
 
     Page<CategoryDo> queryCategoryPage(@Param("page") Page<CategoryDo> page,
         @Param("searchVo") CategorySearchVo searchVo);
+
+    List<CategoryDo> getAllCategory();
 }
 
