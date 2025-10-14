@@ -40,13 +40,6 @@ public class CategoryController {
         return categoryService.selectByName(name);
     }
 
-    @PostMapping("/category/add")
-    @ApiOperation(value = "新增分类")
-    @ApiOperationLog(description = "新增分类")
-    public Response<CategoryDo> addCategory(@RequestBody @Validated CategoryDo categoryDo) {
-        return categoryService.addCategory(categoryDo);
-    }
-
     @PostMapping("/category/page")
     @ApiOperation(value = "分页查询分类")
     @ApiOperationLog(description = "分页查询分类")
@@ -54,18 +47,25 @@ public class CategoryController {
         return categoryService.queryCategoryPage(searchVo);
     }
 
-    @PostMapping("/category/delete")
-    @ApiOperation(value = "删除分类")
-    @ApiOperationLog(description = "删除分类")
-    public Response<String> deleteCategory(String categoryId) {
-        return categoryService.deleteCategory(categoryId);
-    }
-
     @PostMapping("/category/list")
     @ApiOperation(value = "获取所有分类")
     @ApiOperationLog(description = "获取所有分类")
     public Response<List<CategoryDo>> queryCategoryList() {
         return categoryService.getAllCategory();
+    }
+
+    @PostMapping("/category/add")
+    @ApiOperation(value = "新增分类")
+    @ApiOperationLog(description = "新增分类")
+    public Response<CategoryDo> addCategory(@RequestBody @Validated CategoryDo categoryDo) {
+        return categoryService.addCategory(categoryDo);
+    }
+
+    @PostMapping("/category/delete")
+    @ApiOperation(value = "删除分类")
+    @ApiOperationLog(description = "删除分类")
+    public Response<String> deleteCategory(String categoryId) {
+        return categoryService.deleteCategory(categoryId);
     }
 
 }
