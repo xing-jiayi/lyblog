@@ -18,7 +18,7 @@ export default defineConfig({
 			},
 		},
 		host: "0.0.0.0",
-		port: 5173,
+		port: 8890,
 		allowedHosts: ["blog.test.crushtj.top"],
 	},
 	plugins: [
