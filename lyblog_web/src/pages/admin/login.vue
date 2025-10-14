@@ -55,7 +55,7 @@
 	import { login } from "@/api/admin/user"
 	import { onBeforeUnmount, onMounted, reactive, ref } from "vue"
 	import { useRouter } from "vue-router"
-	import { setToken } from "../../composables/auth"
+	import { setToken } from "@/composables/cookie"
 	// import { ElMessage } from "element-plus"
 
 	const router = useRouter()
@@ -95,6 +95,7 @@
 			})
 	}
 
+	//回车键登录
 	function onKeyUp(e) {
 		if (e.key == "Enter") {
 			onSubmit()

@@ -59,7 +59,7 @@
 
 <script setup>
 	import { ref } from "vue"
-	import { useMenuStore } from "@/store/menu"
+	import { useMenuStore } from "@/stores/menu"
 	import { useFullscreen } from "@vueuse/core"
 
 	const menuStore = useMenuStore()

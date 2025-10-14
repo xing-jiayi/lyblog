@@ -35,7 +35,7 @@
 	import AdminHeader from "./components/AdminHeader.vue"
 	import AdminMenu from "./components/AdminMenu.vue"
 	import AdminTagList from "./components/AdminTagList.vue"
-	import { useMenuStore } from "@/store/menu"
+	import { useMenuStore } from "@/stores/menu"
 
 	const menuStore = useMenuStore()
 </script>

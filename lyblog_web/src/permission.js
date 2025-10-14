@@ -1,6 +1,6 @@
 import router from "@/router/index"
-import { getToken } from "@/composables/auth"
-import { hidePageLoading, showPageLoading } from "./composables/utils"
+import { getToken } from "@/composables/cookie"
+import { hidePageLoading, showPageLoading } from "@/composables/utils"
 
 // 全局路由前置守卫
 router.beforeEach((to, from, next) => {

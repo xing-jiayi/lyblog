@@ -4,7 +4,7 @@
 		<div class="flex items-center justify-center h-[64px]">
 			<img src="@/assets/img/logo.png" alt="logo" class="h-[30px]" />
 			<div v-if="menuStore.menuWidth == '250px'">
-				<pre style="font-size: 20pt; font-family: 华文行楷">  LyBlog</pre>
+				<pre style="font-size: 20pt; font-family: 'Yunmobei enfont'">  LyBlog</pre>
 			</div>
 		</div>
 
@@ -26,7 +26,7 @@
 <script setup>
 	import { ref, computed } from "vue"
 	import { useRoute, useRouter } from "vue-router"
-	import { useMenuStore } from "@/store/menu"
+	import { useMenuStore } from "@/stores/menu"
 
 	const route = useRoute()
 	const router = useRouter()
