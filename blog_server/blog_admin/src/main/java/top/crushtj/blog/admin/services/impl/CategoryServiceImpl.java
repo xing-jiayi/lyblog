@@ -1,12 +1,15 @@
 package top.crushtj.blog.admin.services.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import top.crushtj.blog.common.domain.dos.vo.category.CategorySearchVo;
 import top.crushtj.blog.admin.services.CategoryService;
 import top.crushtj.blog.common.domain.dos.CategoryDo;
 import top.crushtj.blog.common.domain.mappers.CategoryMapper;
 import top.crushtj.blog.common.enums.ResponseCodeEnum;
 import top.crushtj.blog.common.utils.IdGenerator;
+import top.crushtj.blog.common.utils.PageResponse;
 import top.crushtj.blog.common.utils.Response;
 
 import javax.annotation.Resource;
@@ -46,5 +49,14 @@ public class CategoryServiceImpl implements CategoryService {
         categoryDo.setUpdateTime(LocalDateTime.now());
         categoryMapper.insert(categoryDo);
         return Response.success(categoryDo);
+    }
+
+    @Override
+    public PageResponse<CategoryDo> queryCategoryPage(CategorySearchVo categorySearchVo) {
+        long current = categorySearchVo.getCurrent();
+        long size = categorySearchVo.getSize();
+        Page<CategoryDo> page = new Page<>(current, size);
+        page = categoryMapper.queryCategoryPage(page, categorySearchVo);
+        return PageResponse.success(page, page.getRecords());
     }
 }

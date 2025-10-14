@@ -12,5 +12,18 @@
     <select id="selectByName" resultType="top.crushtj.blog.common.domain.dos.CategoryDo">
         SELECT * FROM t_category WHERE name = #{name} AND is_deleted = 0
     </select>
-
+    <select id="queryCategoryPage" resultType="top.crushtj.blog.common.domain.dos.CategoryDo">
+        SELECT * FROM t_category
+        WHERE is_deleted = 0
+        <if test="searchVo.name != null and searchVo.name != ''">
+            AND name LIKE CONCAT('%', #{searchVo.name}, '%')
+        </if>
+        <if test="searchVo.createTimeStart != null">
+            AND create_time &gt;= #{searchVo.createTimeStart}
+        </if>
+        <if test="searchVo.createTimeEnd != null">
+            AND create_time &lt;= #{searchVo.createTimeEnd}
+        </if>
+        ORDER BY create_time DESC
+    </select>
 </mapper>

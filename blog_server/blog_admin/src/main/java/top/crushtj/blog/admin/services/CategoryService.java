@@ -1,6 +1,8 @@
 package top.crushtj.blog.admin.services;
 
+import top.crushtj.blog.common.domain.dos.vo.category.CategorySearchVo;
 import top.crushtj.blog.common.domain.dos.CategoryDo;
+import top.crushtj.blog.common.utils.PageResponse;
 import top.crushtj.blog.common.utils.Response;
 
 /**
@@ -15,4 +17,6 @@ public interface CategoryService {
     Response<CategoryDo> selectByName(String name);
 
     Response<CategoryDo> addCategory(CategoryDo categoryDo);
+
+    PageResponse<CategoryDo> queryCategoryPage(CategorySearchVo categorySearchVo);
 }

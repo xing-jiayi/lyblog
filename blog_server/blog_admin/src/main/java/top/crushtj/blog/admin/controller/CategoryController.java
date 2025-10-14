@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import top.crushtj.blog.admin.services.CategoryService;
 import top.crushtj.blog.common.aspect.ApiOperationLog;
 import top.crushtj.blog.common.domain.dos.CategoryDo;
+import top.crushtj.blog.common.domain.dos.vo.category.CategorySearchVo;
+import top.crushtj.blog.common.utils.PageResponse;
 import top.crushtj.blog.common.utils.Response;
 
 import javax.annotation.Resource;
@@ -42,6 +44,13 @@ public class CategoryController {
     @ApiOperationLog(description = "新增分类")
     public Response<CategoryDo> addCategory(@RequestBody @Validated CategoryDo categoryDo) {
         return categoryService.addCategory(categoryDo);
+    }
+
+    @PostMapping("/category/page")
+    @ApiOperation(value = "分页查询分类")
+    @ApiOperationLog(description = "分页查询分类")
+    public PageResponse<CategoryDo> queryCategoryPage(@RequestBody @Validated CategorySearchVo searchVo) {
+        return categoryService.queryCategoryPage(searchVo);
     }
 
 }
