@@ -2,6 +2,7 @@ package top.crushtj.blog.admin.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import top.crushtj.blog.common.utils.Response;
  * @description 管理员用户controller
  */
 
+@Slf4j
 @RestController
 @RequestMapping("/admin")
 @Api(tags = "Admin 用户模块")

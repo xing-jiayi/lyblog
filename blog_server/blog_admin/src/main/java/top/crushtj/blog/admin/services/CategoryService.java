@@ -1,0 +1,18 @@
+package top.crushtj.blog.admin.services;
+
+import top.crushtj.blog.common.domain.dos.CategoryDo;
+import top.crushtj.blog.common.utils.Response;
+
+/**
+ * @author 刑加一
+ * @url www.crushtj.top
+ * @date 2025/10/14 15:01
+ * @description 分类Service
+ */
+
+public interface CategoryService {
+
+    Response<CategoryDo> selectByName(String name);
+
+    Response<CategoryDo> addCategory(CategoryDo categoryDo);
+}
