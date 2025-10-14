@@ -29,7 +29,9 @@ public enum ResponseCodeEnum implements BaseExceptionInterface {
     SAME_PASSWORD("50006", "新密码和旧密码不能相同！"),
 
     // 300xx 文章/分类/标签相关
-    CATEGORY_NAME_IS_EXISTED("30001", "分类名称已存在！");
+    CATEGORY_NAME_IS_EXISTED("30001", "分类名称已存在！"),
+    CATEGORY_IS_NOT_EXISTED("30002", "要删除的分类不存在！"),
+    ;
 
     private final String errorCode;
     private final String errorMessage;

@@ -59,4 +59,16 @@ public class CategoryServiceImpl implements CategoryService {
         page = categoryMapper.queryCategoryPage(page, categorySearchVo);
         return PageResponse.success(page, page.getRecords());
     }
+
+    @Override
+    public Response<String> deleteCategory(String categoryId) {
+        CategoryDo category = categoryMapper.selectById(categoryId);
+        if (Objects.isNull(category)) {
+            return Response.failure(ResponseCodeEnum.CATEGORY_IS_NOT_EXISTED);
+        }
+        category.setUpdateTime(LocalDateTime.now());
+        category.setIsDeleted(1);
+        categoryMapper.updateById(category);
+        return Response.success("删除成功！");
+    }
 }

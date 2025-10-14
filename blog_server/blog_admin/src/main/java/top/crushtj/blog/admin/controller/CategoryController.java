@@ -53,4 +53,11 @@ public class CategoryController {
         return categoryService.queryCategoryPage(searchVo);
     }
 
+    @PostMapping("/category/delete")
+    @ApiOperation(value = "删除分类")
+    @ApiOperationLog(description = "删除分类")
+    public Response<String> deleteCategory(String categoryId) {
+        return categoryService.deleteCategory(categoryId);
+    }
+
 }

@@ -19,4 +19,6 @@ public interface CategoryService {
     Response<CategoryDo> addCategory(CategoryDo categoryDo);
 
     PageResponse<CategoryDo> queryCategoryPage(CategorySearchVo categorySearchVo);
+
+    Response<String> deleteCategory(String categoryId);
 }
