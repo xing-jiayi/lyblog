@@ -13,12 +13,22 @@
 
 		<!-- 右边容器，通过 ml-auto 让其在父容器的右边 -->
 		<div class="ml-auto flex">
-			<!-- 点击全屏展示 -->
+			<el-tooltip class="box-item" effect="dark" content="刷新" placement="bottom">
+				<div
+					class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200"
+					@click="handleRefresh">
+					<el-icon>
+						<Refresh />
+					</el-icon>
+				</div>
+			</el-tooltip>
 			<el-tooltip class="box-item" effect="dark" content="全屏" placement="bottom">
 				<div
-					class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
+					class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200"
+					@click="toggle">
 					<el-icon>
-						<FullScreen />
+						<FullScreen v-if="!isFullscreen" />
+						<Aim v-else />
 					</el-icon>
 				</div>
 			</el-tooltip>
@@ -50,12 +60,15 @@
 <script setup>
 	import { ref } from "vue"
 	import { useMenuStore } from "@/store/menu"
+	import { useFullscreen } from "@vueuse/core"
 
 	const menuStore = useMenuStore()
 	const handleMenuWidth = () => {
 		// 动态设置菜单的宽度大小
 		menuStore.handleMenuWidth()
 	}
+	const { isFullscreen, toggle } = useFullscreen()
+	const handleRefresh = () => location.reload()
 </script>
 
 <style scoped>
