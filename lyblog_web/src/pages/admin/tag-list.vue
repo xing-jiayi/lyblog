@@ -152,7 +152,7 @@
 			size: size.value,
 			createTimeStart: startDate.value ? startDate.value + " 00:00:00" : "",
 			createTimeEnd: endDate.value ? endDate.value + " 23:59:59" : "",
-			name: searchTagName.value,
+			tagName: searchTagName.value,
 		})
 			.then((res) => {
 				if (res.success === true) {
