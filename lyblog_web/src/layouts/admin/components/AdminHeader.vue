@@ -40,7 +40,7 @@
 					<el-avatar
               class="mr-2"
               :size="25"
-              src="https://img.quanxiaoha.com/quanxiaoha/f97361c0429d4bb1bc276ab835843065.jpg"/>
+              src="https://lsky.crushtj.top/blog/25/10/14/avatar-1.jpg"/>
 					{{ userStore.userInfo.username }}
 					<el-icon class="el-icon--right">
 						<arrow-down/>

@@ -1,16 +1,5 @@
-import axios from "@/axios"
+import { postAction } from "@/api/manage"
 
-export function login(username, password) {
-    return axios.post("/login", {
-        username,
-        password,
-    })
-}
-
-export function getUserInfo() {
-    return axios.post("/admin/user/info")
-}
-
-export function updateUserPassword(user){
-    return axios.post("/admin/password/update", user)
-}
+export const login = (param) => postAction("/login", param)
+export const getUserInfo = () => postAction("/admin/user/info")
+export const updateUserPassword = (user) => postAction("/admin/password/update", user)
