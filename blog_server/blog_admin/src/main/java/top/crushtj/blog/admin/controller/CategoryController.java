@@ -17,6 +17,7 @@ import top.crushtj.blog.common.utils.Response;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 刑加一
@@ -36,7 +37,8 @@ public class CategoryController {
     @PostMapping("/category/queryByName")
     @ApiOperation(value = "通过名称查询分类")
     @ApiOperationLog(description = "通过名称查询分类")
-    public Response<CategoryDo> selectByName(String name) {
+    public Response<CategoryDo> selectByName(@RequestBody Map<String, String> param) {
+        String name = param.get("name");
         return categoryService.selectByName(name);
     }
 
@@ -64,7 +66,8 @@ public class CategoryController {
     @PostMapping("/category/delete")
     @ApiOperation(value = "删除分类")
     @ApiOperationLog(description = "删除分类")
-    public Response<String> deleteCategory(String categoryId) {
+    public Response<String> deleteCategory(@RequestBody Map<String,String> param) {
+        String categoryId = param.get("id");
         return categoryService.deleteCategory(categoryId);
     }
 

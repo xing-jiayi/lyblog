@@ -63,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Response<String> deleteCategory(String categoryId) {
-        CategoryDo category = categoryMapper.selectById(categoryId);
+        CategoryDo category = categoryMapper.selectNormalById(categoryId);
         if (Objects.isNull(category)) {
             return Response.failure(ResponseCodeEnum.CATEGORY_IS_NOT_EXISTED);
         }

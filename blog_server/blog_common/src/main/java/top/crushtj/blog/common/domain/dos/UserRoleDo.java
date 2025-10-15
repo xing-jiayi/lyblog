@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class UserRoleDo implements Serializable {
      * 角色id
      */
     @TableId("ROLE_ID")
-    @JSONField(serializeUsing = ToStringSerializer.class)
+    @JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long roleId;
 
     /**

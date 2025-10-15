@@ -1,10 +1,10 @@
 package top.crushtj.blog.common.domain.dos;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +32,7 @@ public class UserDo implements Serializable {
      * 用户id
      */
     @TableId("USER_ID")
-    @JSONField(serializeUsing = ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     /**

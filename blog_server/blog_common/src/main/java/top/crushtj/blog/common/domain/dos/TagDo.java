@@ -1,49 +1,45 @@
 package top.crushtj.blog.common.domain.dos;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * @author 刑加一
  * @url www.crushtj.top
- * @date 2025/10/14 14:56
- * @description 文章分类表(t_category)实体类
+ * @date 2025/10/15 14:27
+ * @description 文章标签表(t_tag)实体类
  **/
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("t_category")
-public class CategoryDo implements Serializable {
-    private static final long serialVersionUID = 886221065936721083L;
+@TableName("t_tag")
+public class TagDo implements Serializable {
+    private static final long serialVersionUID = 949708588118079360L;
 
     /**
-     * 分类id
+     * 标签id
      */
-    @TableId("CATEGORY_ID")
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long categoryId;
+    @TableId("TAG_ID")
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long tagId;
 
     /**
-     * 分类名称
+     * 标签名称
      */
-    @TableField("NAME")
-    @NotBlank(message = "分类名称不能为空")
-    @Length(min = 1, max = 10, message = "分类名称字数限制 1 ~ 10 之间")
-    private String name;
+    @TableField("TAG_NAME")
+    private String tagName;
 
     /**
      * 创建时间

@@ -29,4 +29,7 @@
     <select id="getAllCategory" resultType="top.crushtj.blog.common.domain.dos.CategoryDo">
         SELECT * FROM t_category where is_deleted = 0 ORDER BY create_time DESC
     </select>
+    <select id="selectNormalById" resultType="top.crushtj.blog.common.domain.dos.CategoryDo">
+        SELECT * FROM t_category WHERE category_id = #{categoryId} AND is_deleted = 0
+    </select>
 </mapper>

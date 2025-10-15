@@ -23,5 +23,7 @@ public interface CategoryMapper extends BaseMapper<CategoryDo> {
         @Param("searchVo") CategorySearchVo searchVo);
 
     List<CategoryDo> getAllCategory();
+
+    CategoryDo selectNormalById(String categoryId);
 }
 
