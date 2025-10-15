@@ -28,7 +28,7 @@
 		<el-card shadow="never">
 			<!-- 新增按钮 -->
 			<div class="mb-5">
-				<el-button type="primary">
+				<el-button type="primary" @click="addVisible = true">
 					<el-icon class="mr-1">
 						<Plus />
 					</el-icon>
@@ -37,12 +37,12 @@
 			</div>
 
 			<!-- 分页列表 -->
-			<el-table :data="tableData" border stripe style="width: 100%">
+			<el-table :data="tableData" border stripe style="width: 100%" v-loading="tableLoading">
 				<el-table-column prop="name" label="分类名称" width="180" />
 				<el-table-column prop="createTime" label="创建时间" width="180" />
 				<el-table-column label="操作">
 					<template #default="scope">
-						<el-button type="danger" size="small">
+						<el-button type="danger" size="small" @click="handleDeleteCategory(scope.row)">
 							<el-icon class="mr-1">
 								<Delete />
 							</el-icon>
@@ -64,6 +64,27 @@
 			</div>
 		</el-card>
 	</div>
+
+	<!-- 新增表单 -->
+	<el-dialog
+		v-model="addVisible"
+		title="添加文章分类"
+		width="40%"
+		:draggable="true"
+		:close-on-click-modal="false"
+		:close-on-press-escape="false">
+		<el-form ref="addCategoryForm" :rules="rules" :model="category">
+			<el-form-item label="分类名称" prop="name" label-width="120px">
+				<el-input v-model="category.name" placeholder="请输入分类名称"></el-input>
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="close" :loading="btnLoading">取消</el-button>
+				<el-button type="primary" @click="onSubmit" :loading="btnLoading"> 提交 </el-button>
+			</span>
+		</template>
+	</el-dialog>
 </template>
 
 <script setup>
@@ -71,9 +92,12 @@
 	import { RefreshRight, Search } from "@element-plus/icons-vue"
 	import { ref, reactive } from "vue"
 	import moment from "moment"
-	import { queryCategoryPage } from "@/api/admin/category"
+	import { queryCategoryPage, addCategory, deleteCategory } from "@/api/admin/category"
+	import { showModel } from "../../composables/utils"
 
 	const tableData = ref([])
+	const tableLoading = ref(false)
+	const btnLoading = ref(false)
 	// 当前页码，给了一个默认值 1
 	const current = ref(1)
 	// 总数据量，给了个默认值 0
@@ -123,20 +147,25 @@
 	}
 
 	const getTableData = () => {
+		tableLoading.value = true
 		queryCategoryPage({
 			current: current.value,
 			size: size.value,
 			createTimeStart: startDate.value ? startDate.value + " 00:00:00" : "",
 			createTimeEnd: endDate.value ? endDate.value + " 23:59:59" : "",
 			name: searchCategoryName.value,
-		}).then((res) => {
-			if (res.success === true) {
-				tableData.value = res.data
-				current.value = res.current
-				size.value = res.size
-				total.value = res.total
-			}
 		})
+			.then((res) => {
+				if (res.success === true) {
+					tableData.value = res.data
+					current.value = res.current
+					size.value = res.size
+					total.value = res.total
+				}
+			})
+			.finally(() => {
+				tableLoading.value = false
+			})
 	}
 	getTableData()
 
@@ -148,14 +177,57 @@
 		getTableData()
 	}
 
-	// const tableData = [
-	// 	{
-	// 		createTime: "2016-05-03 12:00:00",
-	// 		name: "Java",
-	// 	},
-	// 	{
-	// 		createTime: "2016-05-03 12:00:00",
-	// 		name: "Minio",
-	// 	},
-	// ]
+	// 新增
+	const addVisible = ref(false)
+	const addCategoryForm = ref(null)
+	const category = reactive({
+		name: "",
+	})
+	const rules = {
+		name: [
+			{
+				required: true,
+				message: "分类名称不能为空",
+				trigger: "blur",
+			},
+			{ min: 1, max: 20, message: "分类名称字数要求大于 1 个字符，小于 20 个字符", trigger: "blur" },
+		],
+	}
+	const onSubmit = () => {
+		btnLoading.value = true
+		addCategoryForm.value.validate((valid) => {
+			if (!valid) {
+				ElMessage.error("请完善表单信息")
+				return
+			}
+			addCategory(category).then((res) => {
+				if (res.success === true) {
+					ElMessage.success("新增成功")
+					close()
+					getTableData()
+				} else {
+					ElMessage.error(res.errorMessage)
+				}
+			}).finally(() => btnLoading.value = false)
+		})
+	}
+	const close = () => {
+		addVisible.value = false
+		addCategoryForm.value.resetFields()
+	}
+
+	// 删除
+	const handleDeleteCategory = (row) => {
+		console.log(row)
+		showModel(`确认删除分类 ${row.name} 吗？`, "warning", "删除确认").then(() => {
+			deleteCategory(row.categoryId).then((res) => {
+				if (res.success === true) {
+					ElMessage.success("删除成功")
+					getTableData()
+				} else {
+					ElMessage.error(res.errorMessage)
+				}
+			})
+		})
+	}
 </script>

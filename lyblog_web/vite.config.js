@@ -9,17 +9,21 @@ import Components from "unplugin-vue-components/vite"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+	// 构建配置
+	build: {
+		// 设置npm run build生成的文件目录
+		outDir: "publish/lyblog", // 输出目录，可以根据需要修改为其他名称
+	},
 	server: {
 		proxy: {
 			"/api": {
-				target: "http://127.0.0.1:8889",
+				target: "http://localhost:8889",
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},
 		},
 		host: "0.0.0.0",
 		port: 8890,
-		allowedHosts: ["blog.test.crushtj.top"],
 	},
 	plugins: [
 		vue(),
