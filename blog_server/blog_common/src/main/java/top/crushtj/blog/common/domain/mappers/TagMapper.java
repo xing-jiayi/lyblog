@@ -1,7 +1,11 @@
 package top.crushtj.blog.common.domain.mappers;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import top.crushtj.blog.common.domain.dos.TagDo;
+import top.crushtj.blog.common.domain.dos.vo.tag.TagSearchVo;
+
+import java.util.List;
 
 /**
  * @author 刑加一
@@ -12,5 +16,10 @@ import top.crushtj.blog.common.domain.dos.TagDo;
 
 public interface TagMapper extends BaseMapper<TagDo> {
 
+    TagDo selectByName(String tagName);
+
+    List<TagDo> queryAllTags();
+
+    Page<TagDo> queryTagPage(Page<TagDo> page, TagSearchVo searchVo);
 }
 

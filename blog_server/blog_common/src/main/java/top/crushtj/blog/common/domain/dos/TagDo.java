@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -39,6 +40,7 @@ public class TagDo implements Serializable {
      * 标签名称
      */
     @TableField("TAG_NAME")
+    @NotBlank(message = "标签名称不能为空")
     private String tagName;
 
     /**

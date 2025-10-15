@@ -9,5 +9,25 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
     </resultMap>
+    <select id="selectByName" resultType="top.crushtj.blog.common.domain.dos.TagDo">
+        SELECT * FROM t_tag WHERE is_deleted = 0 AND tag_name = #{tagName}
+    </select>
+    <select id="queryAllTags" resultType="top.crushtj.blog.common.domain.dos.TagDo">
+        SELECT * FROM t_tag WHERE is_deleted = 0
+    </select>
+    <select id="queryTagPage" resultType="top.crushtj.blog.common.domain.dos.TagDo">
+        SELECT * FROM t_tag
+        WHERE is_deleted = 0
+        <if test="searchVo.tagName != null and searchVo.tagName != ''">
+            AND name LIKE CONCAT('%', #{searchVo.tagName}, '%')
+        </if>
+        <if test="searchVo.createTimeStart != null">
+            AND create_time &gt;= #{searchVo.createTimeStart}
+        </if>
+        <if test="searchVo.createTimeEnd != null">
+            AND create_time &lt;= #{searchVo.createTimeEnd}
+        </if>
+        ORDER BY create_time DESC
+    </select>
 
 </mapper>
