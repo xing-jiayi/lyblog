@@ -13,13 +13,13 @@
         SELECT * FROM t_tag WHERE is_deleted = 0 AND tag_name = #{tagName}
     </select>
     <select id="queryAllTags" resultType="top.crushtj.blog.common.domain.dos.TagDo">
-        SELECT * FROM t_tag WHERE is_deleted = 0
+        SELECT * FROM t_tag WHERE is_deleted = 0 ORDER BY create_time DESC
     </select>
     <select id="queryTagPage" resultType="top.crushtj.blog.common.domain.dos.TagDo">
         SELECT * FROM t_tag
         WHERE is_deleted = 0
         <if test="searchVo.tagName != null and searchVo.tagName != ''">
-            AND name LIKE CONCAT('%', #{searchVo.tagName}, '%')
+            AND tag_name LIKE CONCAT('%', #{searchVo.tagName}, '%')
         </if>
         <if test="searchVo.createTimeStart != null">
             AND create_time &gt;= #{searchVo.createTimeStart}
