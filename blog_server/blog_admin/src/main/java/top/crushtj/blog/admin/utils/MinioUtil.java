@@ -2,14 +2,16 @@ package top.crushtj.blog.admin.utils;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.StatObjectArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import top.crushtj.blog.admin.config.MinioProperties;
 
+import java.io.ByteArrayInputStream;
+import java.security.MessageDigest;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @author 刑加一
@@ -44,17 +46,41 @@ public class MinioUtil {
             throw new RuntimeException("文件名为空！");
         }
         String contentType = file.getContentType();
-        String key = UUID.randomUUID()
-            .toString()
-            .replace("-", "");
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String filename = String.format("%s_%s", key, suffix);
-        minioClient.putObject(PutObjectArgs.builder()
-            .bucket(minioProperties.getBucketName())
-            .object(filename)
-            .stream(file.getInputStream(), file.getSize(), -1)
-            .contentType(contentType)
-            .build());
-        return String.format("%s/%s/%s", minioProperties.getEndpoint(), minioProperties.getBucketName(), filename);
+        byte[] fileBytes = file.getBytes();
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] digest = md.digest(fileBytes);
+        StringBuilder sb = new StringBuilder();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b));
+        }
+        String hash = sb.toString();
+        int idx = originalFilename.lastIndexOf(".");
+        String suffix = idx == -1 ? "" : originalFilename.substring(idx);
+        String filename = hash + suffix;
+
+        // 使用UUID生成唯一文件名，现已改为使用文件内容的SHA-256哈希值，避免重复上传相同文件
+        // String key = UUID.randomUUID()
+        //     .toString()
+        //     .replace("-", "");
+        // String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        // String filename = String.format("%s_%s", key, suffix);
+
+        // 检查文件是否已存在，若不存在则上传
+        try {
+            minioClient.statObject(StatObjectArgs.builder()
+                .bucket(minioProperties.getBucketName())
+                .object(filename)
+                .build());
+            log.info("文件已存在，跳过上传，文件名：{}", filename);
+            return String.format("%s/%s/%s", minioProperties.getEndpoint(), minioProperties.getBucketName(), filename);
+        } catch (Exception e) {
+            minioClient.putObject(PutObjectArgs.builder()
+                .bucket(minioProperties.getBucketName())
+                .object(filename)
+                .stream(new ByteArrayInputStream(fileBytes), fileBytes.length, -1)
+                .contentType(contentType)
+                .build());
+            return String.format("%s/%s/%s", minioProperties.getEndpoint(), minioProperties.getBucketName(), filename);
+        }
     }
 }
