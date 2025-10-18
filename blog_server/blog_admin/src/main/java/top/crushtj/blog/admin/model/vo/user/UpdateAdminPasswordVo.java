@@ -1,7 +1,7 @@
 package top.crushtj.blog.admin.model.vo.user;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class UpdateAdminPasswordVo implements Serializable {
     private static final long serialVersionUID = -8935243038997056399L;
 
     @ApiModelProperty(value = "用户ID")
-    @JSONField(serializeUsing = ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     @NotBlank(message = "用户名不能为空")

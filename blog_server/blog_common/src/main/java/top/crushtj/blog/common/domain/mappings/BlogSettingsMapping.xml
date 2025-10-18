@@ -15,10 +15,11 @@
         <result property="zhihuHomepage" column="zhihu_homepage" jdbcType="VARCHAR"/>
         <result property="customUrl" column="custom_url" jdbcType="VARCHAR"/>
     </resultMap>
-    <select id="queryByAuthor" resultType="top.crushtj.blog.common.domain.dos.BlogSettingsDo">
+    <select id="queryByAuthorId" resultType="top.crushtj.blog.common.domain.dos.BlogSettingsDo">
         SELECT *
         FROM t_blog_settings
-        WHERE author = #{author}
+        WHERE is_deleted = 0
+          AND user_id = #{userId}
     </select>
 
 </mapper>

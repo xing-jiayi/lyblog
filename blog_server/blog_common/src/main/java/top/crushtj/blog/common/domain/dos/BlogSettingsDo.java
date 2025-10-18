@@ -11,11 +11,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @author 刑加一
  * @url www.crushtj.top
- * @date 2025/10/18 21:08
+ * @date 2025/10/18 22:40
  * @description 博客设置表(t_blog_settings)实体类
  **/
 
@@ -25,7 +26,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @TableName("t_blog_settings")
 public class BlogSettingsDo implements Serializable {
-    private static final long serialVersionUID = -75535637412900793L;
+    private static final long serialVersionUID = -75415665619969978L;
 
     /**
      * 设置id
@@ -33,6 +34,13 @@ public class BlogSettingsDo implements Serializable {
     @TableId("SETTING_ID")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long settingId;
+
+    /**
+     * 用户id
+     */
+    @TableField("USER_ID")
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long userId;
 
     /**
      * 博客Logo
@@ -93,6 +101,24 @@ public class BlogSettingsDo implements Serializable {
      */
     @TableField("CUSTOM_URL")
     private String customUrl;
+
+    /**
+     * 创建时间
+     */
+    @TableField("CREATE_TIME")
+    private LocalDateTime createTime;
+
+    /**
+     * 最后一次更新时间
+     */
+    @TableField("UPDATE_TIME")
+    private LocalDateTime updateTime;
+
+    /**
+     * 逻辑删除标志位：0：未删除 1：已删除
+     */
+    @TableField("IS_DELETED")
+    private Integer isDeleted;
 
 }
 

@@ -15,6 +15,6 @@ import javax.validation.constraints.NotBlank;
 
 public interface BlogSettingsMapper extends BaseMapper<BlogSettingsDo> {
 
-    BlogSettingsDo queryByAuthor(@NotBlank(message = "作者名不能为空") String author);
+    BlogSettingsDo queryByAuthorId(@NotBlank(message = "作者名不能为空") String userId);
 }
 

@@ -13,6 +13,7 @@ import top.crushtj.blog.common.exception.BizException;
 import top.crushtj.blog.common.utils.IdGenerator;
 import top.crushtj.blog.common.utils.Response;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -34,11 +35,11 @@ public class AdminSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper, Bl
     }
 
     @Override
-    public Response<BlogSettingsDo> getDetail(String settingId) {
-        if (settingId == null || settingId.isEmpty()) {
+    public Response<BlogSettingsDo> getDetail(String userId) {
+        if (userId == null || userId.isEmpty()) {
             throw new BizException(ResponseCodeEnum.PARAM_NULL);
         }
-        BlogSettingsDo settingsDo = settingsMapper.selectById(settingId);
+        BlogSettingsDo settingsDo = settingsMapper.queryByAuthorId(userId);
         if (Objects.isNull(settingsDo)) {
             return Response.failure("查询的博客信息不存在");
         }
@@ -47,9 +48,16 @@ public class AdminSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper, Bl
 
     @Override
     public Response<BlogSettingsDo> updateSettings(SettingsUpdateVo settingsUpdateVo) {
+        if (settingsUpdateVo.getUserId() == null) {
+            log.error("用户ID不能为空");
+            throw new BizException(ResponseCodeEnum.PARAM_NULL);
+        }
         IdGenerator idGenerator = IdGenerator.getInstance();
         long id = 0L;
         BlogSettingsDo settingsDo = BlogSettingsConvert.INSTANCE.convertVo2Do(settingsUpdateVo);
+        if (settingsDo.getUserId() == null) {
+            settingsDo.setUserId(settingsUpdateVo.getUserId());
+        }
         // 使用构建器模式创建BlogSettingsDo对象，现已改为使用MapStruct进行转换
         // BlogSettingsDo settingsDo = BlogSettingsDo.builder()
         //     .logo(settingsUpdateVo.getLogo())
@@ -62,12 +70,14 @@ public class AdminSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper, Bl
         //     .giteeHomepage(settingsUpdateVo.getGiteeHomepage())
         //     .customUrl(settingsUpdateVo.getCustomUrl())
         //     .build();
-        BlogSettingsDo settings = settingsMapper.queryByAuthor(settingsUpdateVo.getAuthor());
+        BlogSettingsDo settings = settingsMapper.queryByAuthorId(String.valueOf(settingsUpdateVo.getUserId()));
         if (Objects.isNull(settings)) {
             id = idGenerator.nextId();
+            settingsDo.setCreateTime(LocalDateTime.now());
         } else {
             id = settings.getSettingId();
         }
+        settingsDo.setUpdateTime(LocalDateTime.now());
         settingsDo.setSettingId(id);
         saveOrUpdate(settingsDo);
         return Response.success(settingsDo);

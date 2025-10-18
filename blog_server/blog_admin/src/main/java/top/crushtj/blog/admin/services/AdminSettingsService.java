@@ -15,5 +15,5 @@ public interface AdminSettingsService {
 
     Response<BlogSettingsDo> updateSettings(SettingsUpdateVo settingsUpdateVo);
 
-    Response<BlogSettingsDo> getDetail(String settingId);
+    Response<BlogSettingsDo> getDetail(String userId);
 }

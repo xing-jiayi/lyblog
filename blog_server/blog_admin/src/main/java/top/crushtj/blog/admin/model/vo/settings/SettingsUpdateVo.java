@@ -34,6 +34,13 @@ public class SettingsUpdateVo {
     private Long settingId;
 
     /**
+     * 用户id
+     */
+    @TableField("USER_ID")
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long userId;
+
+    /**
      * 博客Logo
      */
     @TableField("LOGO")

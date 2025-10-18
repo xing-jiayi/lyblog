@@ -45,8 +45,8 @@ public class BlogSettingsController {
     @PostMapping("/detail")
     @ApiOperation(value = "获取博客详情")
     @ApiOperationLog(description = "获取博客详情")
-    public Response<BlogSettingsDo> getSettingsDetail(@RequestBody Map<String, String> settingId) {
-        String id = settingId.get("settingId");
-        return settingsService.getDetail(id);
+    public Response<BlogSettingsDo> getSettingsDetail(@RequestBody Map<String, String> id) {
+        String userId = id.get("userId");
+        return settingsService.getDetail(userId);
     }
 }
