@@ -1,5 +1,5 @@
-import {defineStore} from "pinia"
 import {ref} from "vue"
+import { defineStore } from "pinia"
 
 export const useMenuStore = defineStore("menu", () => {
         // 左边栏菜单默认宽度

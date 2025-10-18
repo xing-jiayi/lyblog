@@ -20,6 +20,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
 
+// Register Pinia before mounting
+app.use(pinia)
+
 // Mount the app after all configurations
 app.mount("#app")
-app.use(pinia)

@@ -31,35 +31,35 @@ const routes = [
 		// 使用到 admin.vue 布局的，都需要放置在其子路由下面
 		children: [
 			{
-				path: "/admin/index",
+				path: "index",
 				component: AdminIndex,
 				meta: {
 					title: "仪表盘",
 				},
 			},
 			{
-				path: "/admin/article/list",
+				path: "article/list",
 				component: AdminArticleList,
 				meta: {
 					title: "文章管理",
 				},
 			},
 			{
-				path: "/admin/category/list",
+				path: "category/list",
 				component: AdminCategoryList,
 				meta: {
 					title: "分类管理",
 				},
 			},
 			{
-				path: "/admin/tag/list",
+				path: "tag/list",
 				component: AdminTagList,
 				meta: {
 					title: "标签管理",
 				},
 			},
 			{
-				path: "/admin/blog/setting",
+				path: "blog/setting",
 				component: AdminBlogSetting,
 				meta: {
 					title: "博客设置",
