@@ -111,9 +111,12 @@
 	import { getUserInfo } from "@/api/admin/user"
 	import { getBlogSettingsDetail, updateSettings } from "@/api/admin/settings"
 	import { uploadFile } from "@/api/admin/file"
+	import { useBlogStore } from "@/stores/blog"
 
-  const settingFormRef = ref(null)
-  const btnLoading = ref(false)
+	const blogStore = useBlogStore()
+
+	const settingFormRef = ref(null)
+	const btnLoading = ref(false)
 	// 表单对象
 	const blogSetting = reactive({
 		blogName: "",
@@ -228,14 +231,15 @@
 	}
 
 	const onSubmit = () => {
-    btnLoading.value = true
+		btnLoading.value = true
 		settingFormRef.value.validate((valid) => {
 			if (valid) {
 				updateSettings(blogSetting).then((res) => {
 					if (res.success) {
 						ElMessage.success("保存成功")
-            initBlogSettings()
-            btnLoading.value = false
+						blogStore.setBlogSettings(blogSetting)
+						initBlogSettings()
+						btnLoading.value = false
 					} else {
 						ElMessage.error(res.errorMessage || "保存失败")
 						btnLoading.value = false

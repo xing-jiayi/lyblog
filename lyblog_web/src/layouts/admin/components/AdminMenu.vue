@@ -1,10 +1,12 @@
 <template>
-	<div class="fixed overflow-y-auto bg-slate-800 h-screen text-white menu-container transition-all" :style="{ width: menuStore.menuWidth }">
+	<div
+		class="fixed overflow-y-auto bg-slate-800 h-screen text-white menu-container transition-all"
+		:style="{ width: menuStore.menuWidth }">
 		<!-- 顶部 Logo, 指定高度为 64px, 和右边的 Header 头保持一样高 -->
 		<div class="flex items-center justify-center h-[64px]">
-			<img src="@/assets/img/logo.png" alt="logo" class="h-[30px]" />
+			<img :src="blogStore.blogSetting.logo" alt="logo" class="h-[30px]" />
 			<div v-if="menuStore.menuWidth == '250px'">
-				<pre style="font-size: 20pt; font-family: 'Yunmobei enfont'">  LyBlog</pre>
+				<pre style="font-size: 20pt; font-family: 'Yunmobei enfont'">  {{ blogStore.blogSetting.blogName }}</pre>
 			</div>
 		</div>
 
@@ -27,9 +29,11 @@
 	import { ref, computed } from "vue"
 	import { useRoute, useRouter } from "vue-router"
 	import { useMenuStore } from "@/stores/menu"
+	import { useBlogStore } from "@/stores/blog"
 
 	const route = useRoute()
 	const router = useRouter()
+	const blogStore = useBlogStore()
 	const menuStore = useMenuStore()
 	const isCollapse = computed(() => !(menuStore.menuWidth == "250px"))
 

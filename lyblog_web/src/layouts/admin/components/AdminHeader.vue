@@ -38,7 +38,7 @@
 				<el-dropdown class="flex items-center justify-center" @command="handleCommand">
 					<span class="el-dropdown-link flex items-center justify-center text-gray-700 text-xs">
 						<!-- 头像 Avatar -->
-						<el-avatar class="mr-2" :size="25" src="https://lsky.crushtj.top/blog/25/10/14/avatar-1.jpg" />
+						<el-avatar class="mr-2" :size="25" :src="blogStore.blogSetting.avatar" />
 						{{ userStore.userInfo.username }}
 						<el-icon class="el-icon--right">
 							<arrow-down />
@@ -104,9 +104,11 @@
 	import { useRouter } from "vue-router"
 	import { showModel } from "@/composables/utils"
 	import { updateUserPassword } from "@/api/admin/user"
+	import { useBlogStore } from "@/stores/blog"
 
 	const menuStore = useMenuStore()
 	const userStore = useUserStore()
+	const blogStore = useBlogStore()
 	const router = useRouter()
 	const handleMenuWidth = () => {
 		// 动态设置菜单的宽度大小
