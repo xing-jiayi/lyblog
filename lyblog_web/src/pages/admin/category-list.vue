@@ -200,15 +200,17 @@
 				ElMessage.error("请完善表单信息")
 				return
 			}
-			addCategory(category).then((res) => {
-				if (res.success === true) {
-					ElMessage.success("新增成功")
-					close()
-					getTableData()
-				} else {
-					ElMessage.error(res.errorMessage)
-				}
-			}).finally(() => btnLoading.value = false)
+			addCategory(category)
+				.then((res) => {
+					if (res.success === true) {
+						ElMessage.success("新增成功")
+						close()
+						getTableData()
+					} else {
+						ElMessage.error(res.errorMessage)
+					}
+				})
+				.finally(() => (btnLoading.value = false))
 		})
 	}
 	const close = () => {
@@ -218,7 +220,6 @@
 
 	// 删除
 	const handleDeleteCategory = (row) => {
-		console.log(row)
 		showModel(`确认删除分类 ${row.name} 吗？`, "warning", "删除确认").then(() => {
 			deleteCategory(row.categoryId).then((res) => {
 				if (res.success === true) {

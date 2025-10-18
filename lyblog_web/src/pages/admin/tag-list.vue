@@ -88,7 +88,7 @@
 </template>
 
 <script setup>
-	import { addTag, queryTagPage,deleteTag } from "@/api/admin/tag"
+	import { addTag, queryTagPage, deleteTag } from "@/api/admin/tag"
 	import { RefreshRight, Search } from "@element-plus/icons-vue"
 	import moment from "moment"
 	import { reactive, ref } from "vue"
@@ -219,7 +219,6 @@
 
 	// 删除
 	const handleDeleteTag = (row) => {
-		console.log(row)
 		showModel(`确认删除标签 ${row.tagName} 吗？`, "warning", "删除确认").then(() => {
 			deleteTag(row.tagId).then((res) => {
 				if (res.success === true) {

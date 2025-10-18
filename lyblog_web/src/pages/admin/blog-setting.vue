@@ -157,8 +157,6 @@
 						isCSDNChecked.value = blogSetting.csdnHomepage !== ""
 						// 设置是否开启 自定义访问
 						isCustomChecked.value = blogSetting.customUrl !== ""
-
-						console.log(blogSetting)
 					}
 				})
 			}
@@ -179,7 +177,7 @@
 				}
 				ElMessage.success("上传成功")
 			} else {
-				ElMessage.error(res.errorMessage || "上传失败")
+				ElMessage.error(res.errorMessage || res.message || "上传失败")
 				return
 			}
 		})
