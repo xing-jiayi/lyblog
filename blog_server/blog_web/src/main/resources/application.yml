@@ -1,6 +1,10 @@
 spring:
   profiles:
     active: dev  # 开发环境
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 #    active: prod  # 生产环境
 
 jwt:

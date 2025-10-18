@@ -18,6 +18,7 @@ public enum ResponseCodeEnum implements BaseExceptionInterface {
     SYSTEM_ERROR("500", "系统异常，请稍后重试！"),
     PARAMS_ERROR("400", "参数异常，请检查后重试！"),
     PARAMS_NOT_VALID("401", "参数校验失败，请检查后重试！"),
+    PARAM_NULL("504", "请求参数不能为空"),
 
     // 500xx 用户/权限相关
     LOGIN_FAIL("50000", "登录失败！"),
@@ -31,7 +32,10 @@ public enum ResponseCodeEnum implements BaseExceptionInterface {
     // 300xx 文章/分类/标签相关
     CATEGORY_NAME_IS_EXISTED("30001", "分类名称已存在！"),
     CATEGORY_IS_NOT_EXISTED("30002", "要删除的分类不存在！"),
-    TAG_IS_NOT_EXIST("30011", "要删除的标签不存在！" );
+    TAG_IS_NOT_EXIST("30011", "要删除的标签不存在！"),
+
+    // 400xx 文件相关
+    FILE_UPLOAD_ERROR("40001", "文件上传失败！");
 
     private final String errorCode;
     private final String errorMessage;

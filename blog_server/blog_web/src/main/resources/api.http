@@ -1,0 +1,47 @@
+### 登录并保存token
+POST http://localhost:8889/login
+Content-Type: application/json
+
+{
+  "username": "ayi",
+  "password": "ayi"
+}
+
+> {%
+    client.global.set("token", response.body.data.token);
+%}
+
+### 分类列表
+POST http://localhost:8889/admin/category/list
+Authorization: Bearer {{token}}
+
+### 新增分类
+POST http://localhost:8889/admin/category/add
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Javacript"
+}
+
+### 删除分类
+POST http://localhost:8889/admin/category/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+
+  "id": "766628591751532544"
+
+}
+
+### 查询
+POST http://localhost:8889/admin/category/page
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "pageNum": 1,
+  "pageSize": 10,
+  "name": "Java"
+}
