@@ -13,4 +13,6 @@ import top.crushtj.blog.common.utils.Response;
 public interface AdminArticleService {
 
     Response<PublishArticleReqVO> publishArticle(PublishArticleReqVO reqVO);
+
+    Response<String> deleteArticle(String articleId);
 }

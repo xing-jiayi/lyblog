@@ -7,5 +7,8 @@
         <result property="articleId" column="article_id" jdbcType="INTEGER"/>
         <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
     </resultMap>
+    <select id="selectByArticleId" resultType="top.crushtj.blog.common.domain.dos.ArticleCategoryRelDo">
+        SELECT * FROM t_article_category_rel WHERE is_deleted = 0 AND article_id = #{articleId}
+    </select>
 
 </mapper>

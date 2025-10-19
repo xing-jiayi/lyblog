@@ -128,4 +128,40 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         }
         return Response.success();
     }
+
+    @Override
+    public Response<String> deleteArticle(String articleId) {
+        if (articleId == null || articleId.isEmpty()) {
+            log.error("文章ID不能为空");
+            throw new BizException(ResponseCodeEnum.PARAM_NULL);
+        }
+        ArticleDo articleDo = articleMapper.selectById(articleId);
+        if (Objects.isNull(articleDo)) {
+            log.error("文章不存在，文章ID：{}", articleId);
+            throw new BizException(ResponseCodeEnum.ARTICLE_IS_NOT_EXISTED);
+        }
+        // 逻辑删除文章
+        articleDo.setIsDeleted(1);
+        articleMapper.updateById(articleDo);
+
+        // 逻辑删除文章内容
+        ArticleContentDo articleContentDo = articleContentMapper.selectByArticleId(articleId);
+        articleContentDo.setIsDeleted(1);
+        articleContentMapper.updateById(articleContentDo);
+
+        // 逻辑删除文章分类关联
+        List<ArticleCategoryRelDo> categories = articleCategoryRelMapper.selectByArticleId(articleId);
+        for (ArticleCategoryRelDo categoryRelDo : categories) {
+            categoryRelDo.setIsDeleted(1);
+            articleCategoryRelMapper.updateById(categoryRelDo);
+        }
+
+        // 逻辑删除文章标签关联
+        List<ArticleTagRelDo> tags = articleTagRelMapper.selectByArticleId(articleId);
+        for (ArticleTagRelDo tagRelDo : tags) {
+            tagRelDo.setIsDeleted(1);
+            articleTagRelMapper.updateById(tagRelDo);
+        }
+        return Response.success("文章删除成功");
+    }
 }

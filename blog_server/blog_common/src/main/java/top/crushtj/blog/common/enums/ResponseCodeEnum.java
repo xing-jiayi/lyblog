@@ -34,6 +34,7 @@ public enum ResponseCodeEnum implements BaseExceptionInterface {
     CATEGORY_IS_NOT_EXISTED("30002", "分类不存在！"),
     TAG_NAME_IS_EXISTED("30011", "标签名称已存在！"),
     TAG_IS_NOT_EXIST("30012", "标签不存在！"),
+    ARTICLE_IS_NOT_EXISTED("30021", "文章不存在！"),
 
     // 400xx 文件相关
     FILE_UPLOAD_ERROR("40001", "文件上传失败！");

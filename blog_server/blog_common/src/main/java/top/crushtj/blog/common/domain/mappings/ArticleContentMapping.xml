@@ -7,5 +7,8 @@
         <result property="articleId" column="article_id" jdbcType="INTEGER"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
     </resultMap>
+    <select id="selectByArticleId" resultType="top.crushtj.blog.common.domain.dos.ArticleContentDo">
+        SELECT * FROM t_article_content WHERE article_id = #{articleId}
+    </select>
 
 </mapper>

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 /**
  * @author 刑加一
  * @url www.crushtj.top
- * @date 2025/10/19 00:48
+ * @date 2025/10/19 12:43
  * @description 文章表(t_article)实体类
  **/
 
@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @TableName("t_article")
 public class ArticleDo implements Serializable {
-    private static final long serialVersionUID = -88122185975581900L;
+    private static final long serialVersionUID = 863729567021771898L;
 
     /**
      * 文章id

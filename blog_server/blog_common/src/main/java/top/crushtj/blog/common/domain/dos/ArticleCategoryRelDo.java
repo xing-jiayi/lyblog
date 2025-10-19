@@ -15,7 +15,7 @@ import java.io.Serializable;
 /**
  * @author 刑加一
  * @url www.crushtj.top
- * @date 2025/10/19 00:41
+ * @date 2025/10/19 12:44
  * @description 文章所属分类关联表(t_article_category_rel)实体类
  **/
 
@@ -25,7 +25,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @TableName("t_article_category_rel")
 public class ArticleCategoryRelDo implements Serializable {
-    private static final long serialVersionUID = 815388184780902680L;
+    private static final long serialVersionUID = 205857696660920838L;
 
     /**
      * id
@@ -47,6 +47,12 @@ public class ArticleCategoryRelDo implements Serializable {
     @TableField("CATEGORY_ID")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long categoryId;
+
+    /**
+     * 删除标志位：0：未删除 1：已删除
+     */
+    @TableField("IS_DELETED")
+    private Integer isDeleted;
 
 }
 

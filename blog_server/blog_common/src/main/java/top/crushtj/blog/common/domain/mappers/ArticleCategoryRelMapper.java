@@ -3,6 +3,9 @@ package top.crushtj.blog.common.domain.mappers;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import top.crushtj.blog.common.domain.dos.ArticleCategoryRelDo;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * @author 刑加一
  * @url www.crushtj.top
@@ -12,5 +15,6 @@ import top.crushtj.blog.common.domain.dos.ArticleCategoryRelDo;
 
 public interface ArticleCategoryRelMapper extends BaseMapper<ArticleCategoryRelDo> {
 
+    List<ArticleCategoryRelDo> selectByArticleId(Serializable articleId);
 }
 

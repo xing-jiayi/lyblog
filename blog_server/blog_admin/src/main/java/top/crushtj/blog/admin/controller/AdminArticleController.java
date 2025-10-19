@@ -12,6 +12,8 @@ import top.crushtj.blog.admin.services.impl.AdminArticleServiceImpl;
 import top.crushtj.blog.common.aspect.ApiOperationLog;
 import top.crushtj.blog.common.utils.Response;
 
+import java.util.Map;
+
 /**
  * @author 刑加一
  * @url www.crushtj.top
@@ -35,5 +37,14 @@ public class AdminArticleController {
     @ApiOperationLog(description = "发布文章")
     public Response publishArticle(@RequestBody @Validated PublishArticleReqVO reqVO) {
         return articleService.publishArticle(reqVO);
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation(value = "删除文章")
+    @ApiOperationLog(description = "删除文章")
+    public Response<String> deleteArticle(@RequestBody Map<String, String> param) {
+        String articleId = param.get("articleId");
+        return articleService.deleteArticle(articleId);
+
     }
 }

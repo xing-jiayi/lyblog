@@ -3,6 +3,8 @@ package top.crushtj.blog.common.domain.mappers;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import top.crushtj.blog.common.domain.dos.ArticleContentDo;
 
+import java.io.Serializable;
+
 /**
  * @author 刑加一
  * @url www.crushtj.top
@@ -12,5 +14,6 @@ import top.crushtj.blog.common.domain.dos.ArticleContentDo;
 
 public interface ArticleContentMapper extends BaseMapper<ArticleContentDo> {
 
+    ArticleContentDo selectByArticleId(Serializable articleId);
 }
 

@@ -8,6 +8,7 @@
         <result property="cover" column="cover" jdbcType="VARCHAR"/>
         <result property="summary" column="summary" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="publishTime" column="publish_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
         <result property="readNum" column="read_num" jdbcType="INTEGER"/>

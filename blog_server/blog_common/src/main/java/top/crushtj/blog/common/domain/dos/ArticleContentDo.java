@@ -15,7 +15,7 @@ import java.io.Serializable;
 /**
  * @author 刑加一
  * @url www.crushtj.top
- * @date 2025/10/19 00:41
+ * @date 2025/10/19 12:44
  * @description 文章内容表(t_article_content)实体类
  **/
 
@@ -25,7 +25,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @TableName("t_article_content")
 public class ArticleContentDo implements Serializable {
-    private static final long serialVersionUID = 198548940801592808L;
+    private static final long serialVersionUID = -72847263575352194L;
 
     /**
      * 文章内容id
@@ -46,6 +46,12 @@ public class ArticleContentDo implements Serializable {
      */
     @TableField("CONTENT")
     private String content;
+
+    /**
+     * 删除标志位：0：未删除 1：已删除
+     */
+    @TableField("IS_DELETED")
+    private Integer isDeleted;
 
 }
 
