@@ -13,5 +13,43 @@
         <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
         <result property="readNum" column="read_num" jdbcType="INTEGER"/>
     </resultMap>
+    <select id="getArticlePage" resultType="top.crushtj.blog.common.domain.dos.vo.article.ArticleListVo">
+        SELECT DISTINCT  a.article_id, a.title, a.cover, a.create_time, a.publish_time, a.read_num, a.summary
+        FROM t_article a
+        LEFT JOIN t_article_content ac ON a.article_id = ac.article_id AND ac.is_deleted = 0
+        LEFT JOIN t_article_category_rel acr ON a.article_id = acr.article_id AND acr.is_deleted = 0
+        LEFT JOIN t_category c ON acr.category_id = c.category_id AND c.is_deleted = 0
+        LEFT JOIN t_article_tag_rel atr ON a.article_id = atr.article_id AND atr.is_deleted = 0
+        LEFT JOIN t_tag t ON atr.tag_id = t.tag_id
+        WHERE a.is_deleted = 0
+        <if test="searchVo.title != null and searchVo.title != ''">
+            AND title LIKE CONCAT('%', #{searchVo.title}, '%')
+        </if>
+        <if test="searchVo.categoryId != null and not searchVo.categoryId.isEmpty()">
+            AND c.category_id IN
+            <foreach collection="searchVo.categoryId" item="cid" open="(" separator="," close=")">
+                #{cid}
+            </foreach>
+        </if>
+        <if test="searchVo.tagId != null and not searchVo.tagId.isEmpty()">
+            AND t.tag_id IN
+            <foreach collection="searchVo.tagId" item="tid" open="(" separator="," close=")">
+                #{tid}
+            </foreach>
+        </if>
+        <if test="searchVo.publishTimeStart != null">
+            AND a.publish_time &gt;= #{searchVo.publishTimeStart}
+        </if>
+        <if test="searchVo.publishTimeEnd != null">
+            AND a.publish_time &lt;= #{searchVo.publishTimeEnd}
+        </if>
+        <if test="searchVo.createTimeStart != null">
+            AND a.create_time &gt;= #{searchVo.createTimeStart}
+        </if>
+        <if test="searchVo.createTimeEnd != null">
+            AND a.create_time &lt;= #{searchVo.createTimeEnd}
+        </if>
+        ORDER BY a.create_time DESC
+    </select>
 
 </mapper>

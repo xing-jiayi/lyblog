@@ -15,5 +15,7 @@ import java.io.Serializable;
 public interface ArticleContentMapper extends BaseMapper<ArticleContentDo> {
 
     ArticleContentDo selectByArticleId(Serializable articleId);
+
+    String getContentByArticleId(Serializable articleId);
 }
 

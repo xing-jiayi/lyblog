@@ -29,5 +29,10 @@
         </if>
         ORDER BY create_time DESC
     </select>
+    <select id="selectByArticleId" resultType="top.crushtj.blog.common.domain.dos.vo.tag.TagVo">
+        SELECT t.tag_id, t.tag_name FROM t_tag t
+        LEFT JOIN t_article_tag_rel atr ON t.tag_id = atr.tag_id AND atr.is_deleted = 0
+        WHERE atr.article_id = #{articleId} AND t.is_deleted = 0
+    </select>
 
 </mapper>

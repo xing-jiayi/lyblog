@@ -10,5 +10,8 @@
     <select id="selectByArticleId" resultType="top.crushtj.blog.common.domain.dos.ArticleContentDo">
         SELECT * FROM t_article_content WHERE article_id = #{articleId}
     </select>
+    <select id="getContentByArticleId" resultType="java.lang.String">
+        SELECT content FROM t_article_content WHERE article_id = #{articleId}
+    </select>
 
 </mapper>

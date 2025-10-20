@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import top.crushtj.blog.common.domain.dos.TagDo;
 import top.crushtj.blog.common.domain.dos.vo.tag.TagSearchVo;
+import top.crushtj.blog.common.domain.dos.vo.tag.TagVo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -21,5 +23,7 @@ public interface TagMapper extends BaseMapper<TagDo> {
     List<TagDo> queryAllTags();
 
     Page<TagDo> queryTagPage(Page<TagDo> page, TagSearchVo searchVo);
+
+    List<TagVo> selectByArticleId(Serializable articleId);
 }
 

@@ -1,15 +1,24 @@
 package top.crushtj.blog.admin.services.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.crushtj.blog.admin.model.vo.article.ArticleDetailVo;
+import top.crushtj.blog.admin.model.vo.article.ArticleUpdateVo;
 import top.crushtj.blog.admin.model.vo.article.PublishArticleReqVO;
 import top.crushtj.blog.admin.services.AdminArticleService;
-import top.crushtj.blog.common.domain.dos.*;
+import top.crushtj.blog.common.domain.ArticleService;
+import top.crushtj.blog.common.domain.dos.ArticleDo;
+import top.crushtj.blog.common.domain.dos.vo.article.ArticleListVo;
+import top.crushtj.blog.common.domain.dos.vo.article.ArticleSearchVo;
+import top.crushtj.blog.common.domain.dos.vo.category.CategoryVo;
 import top.crushtj.blog.common.domain.mappers.*;
 import top.crushtj.blog.common.enums.ResponseCodeEnum;
 import top.crushtj.blog.common.exception.BizException;
 import top.crushtj.blog.common.utils.IdGenerator;
+import top.crushtj.blog.common.utils.PageResponse;
 import top.crushtj.blog.common.utils.Response;
 
 import java.time.LocalDateTime;
@@ -31,25 +40,28 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
     private final ArticleCategoryRelMapper articleCategoryRelMapper;
 
-    private final ArticleContentMapper articleContentMapper;
-
     private final ArticleTagRelMapper articleTagRelMapper;
-
-    private final CategoryMapper categoryMapper;
 
     private final TagMapper tagMapper;
 
+    private final ArticleService articleService;
+
     public AdminArticleServiceImpl(ArticleMapper articleMapper, ArticleCategoryRelMapper articleCategoryRelMapper,
         ArticleContentMapper articleContentMapper, ArticleTagRelMapper articleTagRelMapper,
-        CategoryMapper categoryMapper, TagMapper tagMapper) {
+        CategoryMapper categoryMapper, TagMapper tagMapper, ArticleService articleService) {
         this.articleMapper = articleMapper;
         this.articleCategoryRelMapper = articleCategoryRelMapper;
-        this.articleContentMapper = articleContentMapper;
         this.articleTagRelMapper = articleTagRelMapper;
-        this.categoryMapper = categoryMapper;
         this.tagMapper = tagMapper;
+        this.articleService = articleService;
     }
 
+    /**
+     * 发布文章
+     *
+     * @param reqVO 发布文章请求VO
+     * @return 发布文章响应VO
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Response<PublishArticleReqVO> publishArticle(PublishArticleReqVO reqVO) {
@@ -65,71 +77,22 @@ public class AdminArticleServiceImpl implements AdminArticleService {
             .createTime(LocalDateTime.now())
             .updateTime(LocalDateTime.now())
             .build();
-        articleMapper.insert(articleDo);
+        articleService.addArticle(articleDo);
+        articleService.relContent(articleDo.getArticleId(), reqVO.getContent());
+        articleService.relCategories(articleDo.getArticleId(), reqVO.getCategoryId());
+        articleService.relTags(articleDo.getArticleId(), reqVO.getCategoryId());
 
-        // 文章内容
-        ArticleContentDo articleContentDo = ArticleContentDo.builder()
-            .articleId(articleDo.getArticleId())
-            .content(reqVO.getContent())
-            .contentId(idGenerator.nextId())
-            .build();
-        articleContentMapper.insert(articleContentDo);
-
-        // 文章分类关联
-        for (String id : reqVO.getCategoryId()) {
-            CategoryDo category = categoryMapper.selectById(id);
-            if (Objects.isNull(category)) {
-                log.error("文章分类不存在，分类ID：{}", id);
-                throw new BizException(ResponseCodeEnum.CATEGORY_IS_NOT_EXISTED);
-            }
-        }
-        // List<CategoryDo> categoryList = categoryMapper.selectBatchIds(reqVO.getCategoryId());
-        // if (categoryList == null || categoryList.isEmpty()) {
-        //     log.error("文章分类不存在，分类ID列表：{}", reqVO.getCategoryId());
-        //     throw new BizException(ResponseCodeEnum.CATEGORY_IS_NOT_EXISTED);
-        //     // return Response.failure(String.format("文章分类不存在，分类ID列表：%s", reqVO.getCategoryId()));
-        // }
-
-        for (String categoryId : reqVO.getCategoryId()) {
-            ArticleCategoryRelDo articleCategoryRelDo = ArticleCategoryRelDo.builder()
-                .id(idGenerator.nextId())
-                .articleId(articleDo.getArticleId())
-                .categoryId(Long.valueOf(categoryId))
-                .build();
-            articleCategoryRelMapper.insert(articleCategoryRelDo);
-        }
-
-        // 文章标签关联
-        List<Long> tagIds = new ArrayList<>();
-        for (String tagName : reqVO.getTagNames()) {
-            TagDo tag = tagMapper.selectByName(tagName);
-            if (Objects.isNull(tag)) {
-                log.info("文章标签不存在，即将创建，标签名：{}", tagName);
-                TagDo tagDo = TagDo.builder()
-                    .tagId(idGenerator.nextId())
-                    .tagName(tagName)
-                    .createTime(LocalDateTime.now())
-                    .updateTime(LocalDateTime.now())
-                    .isDeleted(0)
-                    .build();
-                tagMapper.insert(tagDo);
-                tagIds.add(tagDo.getTagId());
-            } else {
-                tagIds.add(tag.getTagId());
-            }
-        }
-        for (Long tagId : tagIds) {
-            ArticleTagRelDo articleTagRelDo = ArticleTagRelDo.builder()
-                .id(idGenerator.nextId())
-                .articleId(articleDo.getArticleId())
-                .tagId(tagId)
-                .build();
-            articleTagRelMapper.insert(articleTagRelDo);
-        }
         return Response.success();
     }
 
+    /**
+     * 删除文章
+     *
+     * @param articleId 文章ID
+     * @return 删除文章响应
+     */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<String> deleteArticle(String articleId) {
         if (articleId == null || articleId.isEmpty()) {
             log.error("文章ID不能为空");
@@ -143,25 +106,90 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         // 逻辑删除文章
         articleDo.setIsDeleted(1);
         articleMapper.updateById(articleDo);
+        articleService.logicDelArticleContent(articleId);
+        articleService.logicDelArticleCategory(articleId);
+        articleService.logicDelArticleTag(articleId);
 
-        // 逻辑删除文章内容
-        ArticleContentDo articleContentDo = articleContentMapper.selectByArticleId(articleId);
-        articleContentDo.setIsDeleted(1);
-        articleContentMapper.updateById(articleContentDo);
-
-        // 逻辑删除文章分类关联
-        List<ArticleCategoryRelDo> categories = articleCategoryRelMapper.selectByArticleId(articleId);
-        for (ArticleCategoryRelDo categoryRelDo : categories) {
-            categoryRelDo.setIsDeleted(1);
-            articleCategoryRelMapper.updateById(categoryRelDo);
-        }
-
-        // 逻辑删除文章标签关联
-        List<ArticleTagRelDo> tags = articleTagRelMapper.selectByArticleId(articleId);
-        for (ArticleTagRelDo tagRelDo : tags) {
-            tagRelDo.setIsDeleted(1);
-            articleTagRelMapper.updateById(tagRelDo);
-        }
         return Response.success("文章删除成功");
+    }
+
+    /**
+     * 获取文章分页列表
+     *
+     * @param searchVo 文章搜索VO
+     * @return 文章分页列表
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public PageResponse<ArticleListVo> getArticlePage(ArticleSearchVo searchVo) {
+        long current = searchVo.getCurrent();
+        long size = searchVo.getSize();
+        Page<ArticleListVo> page = new Page<>(current, size);
+        page = articleMapper.getArticlePage(page, searchVo);
+        articleService.joinCategory(page.getRecords());
+        articleService.joinTag(page.getRecords());
+        return PageResponse.success(page, page.getRecords());
+    }
+
+    /**
+     * 获取文章详情
+     *
+     * @param articleId 文章ID
+     * @return 文章详情
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Response<ArticleDetailVo> getArticleDetail(String articleId) {
+        ArticleDo article = articleMapper.selectById(articleId);
+        if (Objects.isNull(article)) {
+            log.error("文章不存在，文章ID：{}", articleId);
+            throw new BizException(ResponseCodeEnum.ARTICLE_IS_NOT_EXISTED);
+        }
+        ArticleDetailVo articleDetail = new ArticleDetailVo();
+        BeanUtils.copyProperties(article, articleDetail);
+        articleService.joinCategory(articleDetail);
+        articleService.joinTag(articleDetail);
+        articleService.joinContent(articleDetail);
+        return Response.success(articleDetail);
+    }
+
+    /**
+     * 更新文章
+     *
+     * @param reqVO 文章更新请求VO
+     * @return 文章详情响应VO
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Response<String> updateArticle(ArticleUpdateVo reqVO) {
+        IdGenerator idGenerator = IdGenerator.getInstance();
+        if (Objects.isNull(reqVO)) {
+            log.error("请求参数不能为空");
+            throw new BizException(ResponseCodeEnum.PARAM_NULL);
+        }
+        if (reqVO.getArticleId() == null) {
+            log.error("文章ID不能为空");
+            throw new BizException(ResponseCodeEnum.PARAM_NULL);
+        }
+        //更新文章信息
+        ArticleDo article = new  ArticleDo();
+        BeanUtils.copyProperties(reqVO, article);
+        article.setUpdateTime(LocalDateTime.now());
+        articleMapper.updateById(article);
+        //更新文章内容
+        articleService.updateContent(String.valueOf(reqVO.getArticleId()), reqVO.getContent());
+        // 逻辑删除文章分类关联
+        articleService.logicDelArticleCategory(String.valueOf(reqVO.getArticleId()));
+        // 逻辑删除文章标签关联
+        articleService.logicDelArticleTag(String.valueOf(reqVO.getArticleId()));
+        // 关联新的分类
+        List<String> categoryIds = new ArrayList<>();
+        for (CategoryVo category : reqVO.getCategories()) {
+            categoryIds.add(String.valueOf(category.getCategoryId()));
+        }
+        articleService.relCategories(reqVO.getArticleId(), categoryIds);
+        // 关联新的标签
+        articleService.relTags(reqVO.getArticleId(), reqVO.getTagNames());
+        return Response.success("文章更新成功");
     }
 }

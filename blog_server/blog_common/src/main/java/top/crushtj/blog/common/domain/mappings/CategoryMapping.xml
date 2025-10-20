@@ -32,4 +32,10 @@
     <select id="selectNormalById" resultType="top.crushtj.blog.common.domain.dos.CategoryDo">
         SELECT * FROM t_category WHERE category_id = #{categoryId} AND is_deleted = 0
     </select>
+    <select id="selectByArticleId" resultType="top.crushtj.blog.common.domain.dos.vo.category.CategoryVo">
+        SELECT c.name, c.category_id
+        FROM t_category c
+                 LEFT JOIN t_article_category_rel acr ON c.category_id = acr.category_id AND acr.is_deleted = 0
+        WHERE acr.article_id = #{articleId} AND c.is_deleted = 0
+    </select>
 </mapper>

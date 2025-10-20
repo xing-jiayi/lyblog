@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,18 +45,6 @@ public class PublishArticleReqVO implements Serializable {
     private String content;
 
     /**
-     * 分类id
-     */
-    @NotEmpty(message = "文章分类不能为空")
-    private List<String> categoryId;
-
-    /**
-     * 标签id
-     */
-    @NotEmpty(message = "文章标签不能为空")
-    private List<String> tagNames;
-
-    /**
      * 文章标题
      */
     @TableField("TITLE")
@@ -72,16 +59,6 @@ public class PublishArticleReqVO implements Serializable {
     private String cover;
 
     /**
-     * 分类名称
-     */
-    private String name;
-
-    /**
-     * 标签名称
-     */
-    private String tagName;
-
-    /**
      * 文章摘要
      */
     @TableField("SUMMARY")
@@ -92,4 +69,16 @@ public class PublishArticleReqVO implements Serializable {
      */
     @TableField("PUBLISH_TIME")
     private LocalDateTime publishTime;
+
+    /**
+     * 分类id
+     */
+    // @NotEmpty(message = "文章分类不能为空")
+    private List<String> categoryId;
+
+    /**
+     * 标签id
+     */
+    // @NotEmpty(message = "文章标签不能为空")
+    private List<String> tagNames;
 }

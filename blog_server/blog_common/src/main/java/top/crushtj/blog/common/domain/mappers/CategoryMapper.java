@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import top.crushtj.blog.common.domain.dos.CategoryDo;
 import top.crushtj.blog.common.domain.dos.vo.category.CategorySearchVo;
+import top.crushtj.blog.common.domain.dos.vo.category.CategoryVo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -25,5 +27,7 @@ public interface CategoryMapper extends BaseMapper<CategoryDo> {
     List<CategoryDo> getAllCategory();
 
     CategoryDo selectNormalById(String categoryId);
+
+    List<CategoryVo> selectByArticleId(Serializable articleId);
 }
 
