@@ -112,8 +112,10 @@
 	import { getBlogSettingsDetail, updateSettings } from "@/api/admin/settings"
 	import { uploadFile } from "@/api/admin/file"
 	import { useBlogStore } from "@/stores/blog"
+	import { useUserStore } from "@/stores/user"
 
 	const blogStore = useBlogStore()
+	const userStore = useUserStore()
 
 	const settingFormRef = ref(null)
 	const btnLoading = ref(false)
@@ -140,25 +142,21 @@
 		introduction: [{ required: false, message: "请输入介绍语", trigger: "blur" }],
 	}
 
-	const userId = ref("")
+	const userId = userStore.userInfo.userId
 	const initBlogSettings = () => {
-		getUserInfo().then((res) => {
-			if (res.success) {
-				getBlogSettingsDetail(res.data.userId).then((detailRes) => {
-					if (detailRes.success) {
-						Object.assign(blogSetting, detailRes.data)
-						// 设置是否开启 GitHub
-						isGithubChecked.value = blogSetting.githubHomepage !== ""
-						// 设置是否开启 Gitee
-						isGiteeChecked.value = blogSetting.giteeHomepage !== ""
-						// 设置是否开启 知乎
-						isZhihuChecked.value = blogSetting.zhihuHomepage !== ""
-						// 设置是否开启 CSDN
-						isCSDNChecked.value = blogSetting.csdnHomepage !== ""
-						// 设置是否开启 自定义访问
-						isCustomChecked.value = blogSetting.customUrl !== ""
-					}
-				})
+		getBlogSettingsDetail(userId).then((detailRes) => {
+			if (detailRes.success) {
+				Object.assign(blogSetting, detailRes.data)
+				// 设置是否开启 GitHub
+				isGithubChecked.value = blogSetting.githubHomepage !== ""
+				// 设置是否开启 Gitee
+				isGiteeChecked.value = blogSetting.giteeHomepage !== ""
+				// 设置是否开启 知乎
+				isZhihuChecked.value = blogSetting.zhihuHomepage !== ""
+				// 设置是否开启 CSDN
+				isCSDNChecked.value = blogSetting.csdnHomepage !== ""
+				// 设置是否开启 自定义访问
+				isCustomChecked.value = blogSetting.customUrl !== ""
 			}
 		})
 	}
@@ -232,6 +230,7 @@
 		btnLoading.value = true
 		settingFormRef.value.validate((valid) => {
 			if (valid) {
+				blogSetting.userId = blogSetting.userId ? blogSetting.userId : userId
 				updateSettings(blogSetting).then((res) => {
 					if (res.success) {
 						ElMessage.success("保存成功")
