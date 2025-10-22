@@ -162,16 +162,16 @@
 </template>
 
 <script setup>
-	import { ref, reactive } from "vue"
-	import { Search, RefreshRight } from "@element-plus/icons-vue"
-	import moment from "moment"
-	import { getArticlePage, deleteArticle, publishArticle } from "@/api/admin/article"
+	import { deleteArticle, getArticlePage, publishArticle } from "@/api/admin/article"
+	import { getAllCategoryList } from "@/api/admin/category"
+	import { uploadFile } from "@/api/admin/file"
+	import { getTagList } from "@/api/admin/tag"
 	import { showModel } from "@/composables/utils"
+	import { RefreshRight, Search } from "@element-plus/icons-vue"
 	import { MdEditor } from "md-editor-v3"
 	import "md-editor-v3/lib/style.css"
-	import { uploadFile } from "@/api/admin/file"
-	import { getAllCategoryList } from "@/api/admin/category"
-	import { ta } from "element-plus/es/locales.mjs"
+	import moment from "moment"
+	import { reactive, ref } from "vue"
 
 	// 模糊搜索的文章标题
 	const searchArticleTitle = ref("")
@@ -358,7 +358,6 @@
 				return false
 			}
 
-			
 			publishArticle(form).then((res) => {
 				if (res.success == false) {
 					// 获取服务端返回的错误消息
@@ -406,6 +405,7 @@
 			}
 		})
 	}
+	getTagList()
 </script>
 <style scoped>
 	/* 封面图片样式 */
