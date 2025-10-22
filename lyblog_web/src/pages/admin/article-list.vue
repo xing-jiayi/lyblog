@@ -131,7 +131,13 @@
 					<el-input v-model="form.summary" :rows="3" type="textarea" placeholder="请输入文章摘要" />
 				</el-form-item>
 				<el-form-item label="分类" prop="categoryId">
-					<el-select v-model="form.categoryId" clearable placeholder="---请选择---" size="large"> </el-select>
+					<el-select v-model="form.categoryId" clearable placeholder="---请选择---" size="large">
+						<el-option
+							v-for="item in categoryList"
+							:key="item.categoryId"
+							:value="item.categoryId"
+							:label="item.name" />
+					</el-select>
 				</el-form-item>
 				<el-form-item label="标签" prop="tags">
 					<!-- 标签选择 -->
@@ -164,6 +170,8 @@
 	import { MdEditor } from "md-editor-v3"
 	import "md-editor-v3/lib/style.css"
 	import { uploadFile } from "@/api/admin/file"
+	import { getAllCategoryList } from "@/api/admin/category"
+	import { ta } from "element-plus/es/locales.mjs"
 
 	// 模糊搜索的文章标题
 	const searchArticleTitle = ref("")
@@ -350,6 +358,7 @@
 				return false
 			}
 
+			
 			publishArticle(form).then((res) => {
 				if (res.success == false) {
 					// 获取服务端返回的错误消息
@@ -372,6 +381,29 @@
 				// 重新请求分页接口，渲染列表数据
 				getTableData()
 			})
+		})
+	}
+
+	const categoryList = ref([])
+	const getCategoryList = () => {
+		getAllCategoryList().then((res) => {
+			if (res.success === true) {
+				categoryList.value = res.data
+			} else {
+				ElMessage.error(res.errorMessage)
+			}
+		})
+	}
+	getCategoryList()
+
+	const tagList = ref([])
+	const getTagList = () => {
+		getAllTagList().then((res) => {
+			if (res.success === true) {
+				tagList.value = res.data
+			} else {
+				ElMessage.error(res.errorMessage)
+			}
 		})
 	}
 </script>
